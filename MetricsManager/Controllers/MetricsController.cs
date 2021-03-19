@@ -8,51 +8,33 @@ namespace MetricsManager.Controllers
     [Route("[controller]")]
     public class MetricsController : ControllerBase
     {
-        private readonly MetricsRepository repository = MetricsRepository.getInstance();
+        private readonly MetricsRepository repository = new MetricsRepository();
 
         [HttpPost("create")]
-        public IActionResult Create([FromQuery] DateTime date, [FromQuery] int temp)
+        public IActionResult Create([FromQuery] DateTime date, [FromQuery] int temperature)
         {
-            repository.Add(date, temp);
+            repository.Add(date, temperature);
             return Ok();
         }
 
         [HttpGet("read")]
-        public IActionResult Read()
+        public IActionResult ReadTimeInterval([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
         {
-            return Ok(repository);
-        }
-
-        [HttpGet("readtimeinterval")]
-        public IActionResult ReadTimeInterval([FromQuery] string date1, [FromQuery] string date2)
-        {
-            DateTime dateTime1 = DateTime.Parse(date1);
-            DateTime dateTime2 = DateTime.Parse(date2);
-            List<Metrics> list = repository.Read(dateTime1, dateTime2);
+            List<Metrics> list = repository.Read(fromDate, toDate);
             return Ok(list);
         }
 
         [HttpPut("update")]
-        public IActionResult Update([FromQuery] string date , [FromQuery] int temp)
+        public IActionResult Update([FromQuery] DateTime date , [FromQuery] int temp)
         {
-            DateTime dateTime = DateTime.Parse(date);
-            repository.Update(dateTime, temp);
+            repository.Update(date, temp);
             return Ok();
         }
 
         [HttpDelete("delete")]
-        public IActionResult Delete([FromQuery] int index)
+        public IActionResult DeleteTimeInterval([FromQuery] DateTime fromDate, [FromQuery] DateTime toDate)
         {
-            repository.Delete(index);
-            return Ok();
-        }
-
-        [HttpDelete("deltimeinterval")]
-        public IActionResult DeleteTimeInterval([FromQuery] string date1, [FromQuery] string date2)
-        {
-            DateTime dateTime1 = DateTime.Parse(date1);
-            DateTime dateTime2 = DateTime.Parse(date2);
-            repository.Delete(dateTime1, dateTime2);
+            repository.Delete(fromDate, toDate);
             return Ok();
         }
     }

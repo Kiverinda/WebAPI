@@ -6,9 +6,8 @@ namespace MetricsManager
     public class MetricsRepository
     {
         public List<Metrics> metrics { get; set; }
-        private static  MetricsRepository instance { get; set; }
 
-        private MetricsRepository() 
+        public MetricsRepository() 
         {
             metrics = new List<Metrics>();
             metrics.Add(new Metrics(DateTime.Parse("2021-12-12T12:11:12"), 12));
@@ -22,36 +21,26 @@ namespace MetricsManager
             metrics.Add(new Metrics(DateTime.Parse("2021-12-15T13:11:12"), -13));
         }
 
-        internal List<Metrics> Read(DateTime dateTime1, DateTime dateTime2)
+        internal List<Metrics> Read(DateTime fromDate, DateTime toDate)
         {
             List<Metrics> list = new List<Metrics>();
-            for (int i = 0; i < metrics.Count; i++)
+            foreach(Metrics m in metrics)
             {
-                if (metrics[i].date > dateTime1 && metrics[i].date < dateTime2)
-                {
-                    list.Add(metrics[i]);
-                }
+                if (m.date >= fromDate && m.date <= toDate) list.Add(m);
             }
             return list;
         }
 
-        public static MetricsRepository getInstance()
+        public void Add(DateTime date, int temperature)
         {
-            if (instance == null)
-                instance = new MetricsRepository();
-            return instance;
+            metrics.Add(new Metrics(date, temperature));
         }
 
-        public void Add(DateTime date, int temp)
-        {
-            metrics.Add(new Metrics(date, temp));
-        }
-
-        public void Delete(int index)
+        public void Delete(DateTime date)
         {
             for (int i = 0; i < metrics.Count; i++)
             {
-                if (metrics[i].index == index)
+                if (metrics[i].date == date)
                 {
                     metrics.RemoveAt(i);
                     break;
@@ -59,11 +48,11 @@ namespace MetricsManager
             }
         }
 
-        public void Delete(DateTime date1, DateTime date2)
+        public void Delete(DateTime fromDate, DateTime toDate)
         {
             for (int i = 0; i < metrics.Count; i++)
             {
-                if (metrics[i].date > date1 && metrics[i].date < date2)
+                if (metrics[i].date >= fromDate && metrics[i].date <= toDate)
                 {
                     metrics.RemoveAt(i);
                     i--;
@@ -71,11 +60,11 @@ namespace MetricsManager
             }
         }
 
-        public void Update(DateTime date, int temp)
+        public void Update(DateTime date, int temperature)
         {
-            foreach (Metrics m in this.metrics)
+            foreach (Metrics m in metrics)
             {
-                if (m.date == date) m.temperature = temp;
+                if (m.date == date) m.temperature = temperature;
             }
         }
     }
