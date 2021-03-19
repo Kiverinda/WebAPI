@@ -21,7 +21,7 @@ namespace MetricsManager
             metrics.Add(new Metrics(DateTime.Parse("2021-12-15T13:11:12"), -13));
         }
 
-        internal List<Metrics> Read(DateTime fromDate, DateTime toDate)
+        public List<Metrics> Read(DateTime fromDate, DateTime toDate)
         {
             List<Metrics> list = new List<Metrics>();
             foreach(Metrics m in metrics)
@@ -34,18 +34,6 @@ namespace MetricsManager
         public void Add(DateTime date, int temperature)
         {
             metrics.Add(new Metrics(date, temperature));
-        }
-
-        public void Delete(DateTime date)
-        {
-            for (int i = 0; i < metrics.Count; i++)
-            {
-                if (metrics[i].date == date)
-                {
-                    metrics.RemoveAt(i);
-                    break;
-                }
-            }
         }
 
         public void Delete(DateTime fromDate, DateTime toDate)

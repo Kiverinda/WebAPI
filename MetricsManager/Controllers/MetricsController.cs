@@ -8,7 +8,12 @@ namespace MetricsManager.Controllers
     [Route("[controller]")]
     public class MetricsController : ControllerBase
     {
-        private readonly MetricsRepository repository = new MetricsRepository();
+        private readonly MetricsRepository repository;
+
+        public MetricsController(MetricsRepository repository)
+        {
+            this.repository = repository;
+        }
 
         [HttpPost("create")]
         public IActionResult Create([FromQuery] DateTime date, [FromQuery] int temperature)
