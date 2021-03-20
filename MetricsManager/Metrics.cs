@@ -4,13 +4,13 @@ namespace MetricsManager
 {
     public class Metrics
     {
-        public DateTime date { get; set; }
-        public int temperature { get; set; }
+        public DateTime Date { get; set; }
+        public int Temperature { get; set; }
 
-        public Metrics(DateTime date, int temp)
+        public Metrics(DateTime date, int temperature)
         {
-            this.date = date;
-            this.temperature = temp;
+            Date = date;
+            Temperature = temperature;
         }
     }
 }
