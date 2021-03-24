@@ -1,5 +1,4 @@
-﻿using MetricsAgent.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace MetricsAgent.Controllers
@@ -8,10 +7,12 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class HddMetricsAgentController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/left")]
+        private readonly IHddInfoProvider _hddInfoProvider;
+
+        [HttpGet("left")]
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId)
         {
-            double freeHdd = new ServiceHdd().GetFreeMemoryToAllHdd();
+            double freeHdd = _hddInfoProvider.GetFreeHdd();
             return Ok(freeHdd);
         }
     }

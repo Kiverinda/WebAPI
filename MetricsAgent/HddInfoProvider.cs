@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MetricsAgent
 {
-    public class ServiceHdd
+    public class HddInfoProvider : IHddInfoProvider
     {
-        public double GetFreeMemoryToAllHdd()
+        public double GetFreeHdd()
         {
             DriveInfo[] allDrives = DriveInfo.GetDrives();
 

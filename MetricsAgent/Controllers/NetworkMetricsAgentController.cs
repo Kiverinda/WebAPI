@@ -1,5 +1,4 @@
-﻿using MetricsAgent.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
 namespace MetricsAgent.Controllers
@@ -8,9 +7,8 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class NetworkMetricsAgentController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/from/{fromTime}/to/{toTime}")]
+        [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent(
-            [FromRoute] int agentId, 
             [FromRoute] TimeSpan fromTime, 
             [FromRoute] TimeSpan toTime)
         {

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Management;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace MetricsAgent
 {
-    public class ServiceRam
+    public class RamInfoProvider : IRamInfoProvider
     {
-
         public double GetFreeRam()
         {
             ManagementObjectSearcher FreeRam = new ManagementObjectSearcher("SELECT FreePhysicalMemory FROM Win32_OperatingSystem");

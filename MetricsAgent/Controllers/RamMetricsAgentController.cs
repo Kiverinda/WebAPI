@@ -1,5 +1,4 @@
-﻿using MetricsAgent.Enums;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 
 
@@ -9,10 +8,12 @@ namespace MetricsAgent.Controllers
     [ApiController]
     public class RamMetricsAgentController : ControllerBase
     {
-        [HttpGet("agent/{agentId}/available")]
+        private readonly IRamInfoProvider _ramInfoProvider;
+
+        [HttpGet("available")]
         public IActionResult GetMetricsFromAgent([FromRoute] int agentId)
         {
-            double freeRam = new ServiceRam().GetFreeRam();
+            double freeRam = _ramInfoProvider.GetFreeRam();
             return Ok(freeRam);
         }
     }

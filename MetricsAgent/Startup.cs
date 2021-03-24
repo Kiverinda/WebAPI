@@ -25,6 +25,8 @@ namespace MetricsAgent
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IRamInfoProvider, RamInfoProvider>();
+            services.AddSingleton<IHddInfoProvider, HddInfoProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
