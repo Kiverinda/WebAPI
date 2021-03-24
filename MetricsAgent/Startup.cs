@@ -4,8 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace MetricsManager
+namespace MetricsAgent
 {
     public class Startup
     {
@@ -20,7 +25,8 @@ namespace MetricsManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-          //  services.AddSingleton<MetricsRepository>();
+            services.AddSingleton<IRamInfoProvider, RamInfoProvider>();
+            services.AddSingleton<IHddInfoProvider, HddInfoProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -26,7 +26,7 @@ namespace MetricsManager
             List<Metrics> list = new List<Metrics>();
             foreach(Metrics m in _metrics)
             {
-                if (m.date >= fromDate && m.date <= toDate) list.Add(m);
+                if (m.Date >= fromDate && m.Date <= toDate) list.Add(m);
             }
             return list;
         }
@@ -40,7 +40,7 @@ namespace MetricsManager
         {
             for (int i = 0; i < _metrics.Count; i++)
             {
-                if (_metrics[i].date >= fromDate && _metrics[i].date <= toDate)
+                if (_metrics[i].Date >= fromDate && _metrics[i].Date <= toDate)
                 {
                     _metrics.RemoveAt(i);
                     i--;
@@ -52,7 +52,7 @@ namespace MetricsManager
         {
             foreach (Metrics m in _metrics)
             {
-                if (m.date == date) m.temperature = temperature;
+                if (m.Date == date) m.Temperature = temperature;
             }
         }
     }
