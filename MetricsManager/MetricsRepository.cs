@@ -5,7 +5,7 @@ namespace MetricsManager
 {
     public class MetricsRepository
     {
-        public List<Metrics> _metrics;
+        private List<Metrics> _metrics;
 
         public MetricsRepository() 
         {
