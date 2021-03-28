@@ -1,27 +1,28 @@
 using MetricsAgent.Controllers;
-using Microsoft.AspNetCore.Mvc;
-using System;
+using System.Collections.Generic;
+using MetricsAgent.Models;
 using Xunit;
-namespace MetricsManagerTests
+using Moq;
+using MetricsAgent.DAL;
+using Microsoft.Extensions.Logging;
+
+namespace MetricsAgentTests
 {
     public class HddMetricsAgentControllerUnitTests
     {
-        private HddMetricsAgentController _controller;
-
-        public HddMetricsAgentControllerUnitTests()
-        {
-            _controller = new HddMetricsAgentController();
-        }
+        private ILogger<HddMetricsAgentController> _logger;
 
         [Fact]
-        public void GetMetricsFromAgent_ReturnsOk()
+        public void GetMetricsFreeHddCheckRequestSelect()
         {
             //Arrange
-            var agentId = 1;
+            var mock = new Mock<IHddMetricsRepository>();
+            mock.Setup(a => a.GetAll()).Returns(new List<HddMetric>()).Verifiable();
+            var controller = new HddMetricsAgentController(mock.Object, _logger);
             //Act
-            var result = _controller.GetMetricsFromAgent(agentId);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var result = controller.GetMetricsFreeHdd();
+            //Assert
+            mock.Verify(repository => repository.GetAll(), Times.AtMostOnce());
         }
     }
 }

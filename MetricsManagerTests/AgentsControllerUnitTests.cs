@@ -2,6 +2,7 @@ using MetricsManager;
 using MetricsManager.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Xunit;
+
 namespace MetricsManagerTests
 {
     public class AgentsControllerUnitTests

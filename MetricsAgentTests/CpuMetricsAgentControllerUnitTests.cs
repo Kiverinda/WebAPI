@@ -1,44 +1,50 @@
 using MetricsAgent.Controllers;
-using MetricsAgent.Enums;
+using System.Collections.Generic;
+using MetricsAgent.Models;
+using MetricsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
-namespace MetricsManagerTests
+using Moq;
+using MetricsAgent.DAL;
+using Microsoft.Extensions.Logging;
+
+namespace MetricsAgentTests
 {
     public class CpuMetricsAgentControllerUnitTests
     {
-        private CpuMetricsAgentController _controller;
-        
-        public CpuMetricsAgentControllerUnitTests()
+        private ILogger<CpuMetricsAgentController> _logger;
+
+        [Fact] 
+        public void GetCpuMetricsFromTimeToTimeCheckRequestSelect()
         {
-            _controller = new CpuMetricsAgentController();
+            //Arrange
+            var mock = new Mock<ICpuMetricsRepository>();
+            TimeSpan fromTime = TimeSpan.FromSeconds(5);
+            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            mock.Setup(a => a.GetMetricsFromTimeToTime(fromTime, toTime)).Returns(new List<CpuMetric>()).Verifiable();
+            var controller = new CpuMetricsAgentController(mock.Object, _logger);
+            //Act
+            var result = controller.GetMetricsFromTimeToTime(fromTime, toTime);
+            //Assert
+            mock.Verify(repository => repository.GetMetricsFromTimeToTime(fromTime, toTime), Times.AtMostOnce());
         }
 
         [Fact]
-        public void GetMetricsFromAgent_ReturnsOk()
+        public void GetMetricsFromTimeToTimeByPercentileCheckRequestSelect()
         {
             //Arrange
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
+            var mock = new Mock<ICpuMetricsRepository>();
+            TimeSpan fromTime = TimeSpan.FromSeconds(5);
+            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            Percentile percentile = Percentile.P90;
+            string sort = "value";
+            mock.Setup(a => a.GetMetricsFromTimeToTimeOrderBy(fromTime, toTime, sort)).Returns(new List<CpuMetric>()).Verifiable();
+            var controller = new CpuMetricsAgentController(mock.Object, _logger);
             //Act
-            var result = _controller.GetMetricsFromAgent(agentId, fromTime, toTime);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-
-        [Fact]
-        public void GetMetricsByPercentileFromAgent_ReturnsOk()
-        {
-            //Arrange
-            var agentId = 1;
-            var fromTime = TimeSpan.FromSeconds(0);
-            var toTime = TimeSpan.FromSeconds(100);
-            var percentile = Percentile.P90;
-            //Act
-            var result = _controller.GetMetricsByPercentileFromAgent(agentId, fromTime, toTime, percentile);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var result = controller.GetMetricsFromTimeToTimePercentile(fromTime, toTime, percentile);
+            //Assert
+            mock.Verify(repository => repository.GetMetricsFromTimeToTime(fromTime, toTime), Times.AtMostOnce());
         }
     }
 }

@@ -1,8 +1,9 @@
 using MetricsManager.Controllers;
-using MetricsManager.Enums;
+using MetricsLibrary;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
+
 namespace MetricsManagerTests
 {
     public class CpuMetricsControllerUnitTests
