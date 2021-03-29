@@ -2,7 +2,6 @@ using MetricsAgent.Controllers;
 using System.Collections.Generic;
 using MetricsAgent.Models;
 using MetricsLibrary;
-using Microsoft.AspNetCore.Mvc;
 using System;
 using Xunit;
 using Moq;

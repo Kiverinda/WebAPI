@@ -1,61 +1,73 @@
-using MetricsManager;
 using MetricsManager.Controllers;
-using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using MetricsManager.Models;
 using Xunit;
+using Moq;
+using MetricsManager.DAL;
+using Microsoft.Extensions.Logging;
 
 namespace MetricsManagerTests
 {
     public class AgentsControllerUnitTests
     {
-        private AgentsController _controller;
+        private ILogger<AgentsController> _logger;
 
-        public AgentsControllerUnitTests()
+        [Fact]
+        public void RegisterCheckRequestCreate()
         {
-            _controller = new AgentsController();
+            //Arrange
+            var mock = new Mock<IAgentsRepository>();
+            mock.Setup(a => a.Create(new AgentModel())).Verifiable();
+            var controller = new AgentsController(mock.Object, _logger);
+            //Act
+            var result = controller.RegisterAgent(new AgentModel());
+            //Assert
+            mock.Verify(repository => repository.Create(new AgentModel()), Times.AtMostOnce());
         }
 
         [Fact]
-        public void RegisterAgent_ReturnsOk()
+        public void EnableAgentByIdCheckRequestCreate()
         {
             //Arrange
-            var agentInfo = new AgentInfo();
+            var mockGet = new Mock<IAgentsRepository>();
+            var mockUpdate = new Mock<IAgentsRepository>();
+            mockGet.Setup(a => a.GetById(0)).Returns(new AgentModel()).Verifiable();
+            mockUpdate.Setup(a => a.Update(new AgentModel())).Verifiable();
+            var controller = new AgentsController(mockGet.Object, _logger);
             //Act
-            var result = _controller.RegisterAgent(agentInfo);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var result = controller.EnableAgentById(0);
+            //Assert
+            mockGet.Verify(repository => repository.GetById(0), Times.AtMostOnce());
+            mockUpdate.Verify(repository => repository.Update(new AgentModel()), Times.AtMostOnce());
         }
 
         [Fact]
-        public void EnableAgentById_ReturnsOk()
+        public void DisableAgentByIdCheckRequestCreate()
         {
             //Arrange
-            var agentId = 1;
+            var mockGet = new Mock<IAgentsRepository>();
+            var mockUpdate = new Mock<IAgentsRepository>();
+            mockGet.Setup(a => a.GetById(0)).Returns(new AgentModel()).Verifiable();
+            mockUpdate.Setup(a => a.Update(new AgentModel())).Verifiable();
+            var controller = new AgentsController(mockGet.Object, _logger);
             //Act
-            var result = _controller.EnableAgentById(agentId);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var result = controller.DisableAgentById(0);
+            //Assert
+            mockGet.Verify(repository => repository.GetById(0), Times.AtMostOnce());
+            mockUpdate.Verify(repository => repository.Update(new AgentModel()), Times.AtMostOnce());
         }
 
         [Fact]
-        public void DisableAgentById_ReturnsOk()
+        public void GetAllAgentsCheckRequestCreate()
         {
             //Arrange
-            var agentId = 1;
+            var mock = new Mock<IAgentsRepository>();
+            mock.Setup(a => a.GetAll()).Returns(new List<AgentModel>()).Verifiable();
+            var controller = new AgentsController(mock.Object, _logger);
             //Act
-            var result = _controller.DisableAgentById(agentId);
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
-        }
-
-        [Fact]
-        public void GetMetricsByPercentileFromAllCluster_ReturnsOk()
-        {
-            //Arrange
-
-            //Act
-            var result = _controller.GetAllAgents();
-            // Assert
-            _ = Assert.IsAssignableFrom<IActionResult>(result);
+            var result = controller.GetAllAgents();
+            //Assert
+            mock.Verify(repository => repository.GetAll(), Times.AtMostOnce());
         }
     }
 }

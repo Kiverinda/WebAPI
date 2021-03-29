@@ -28,7 +28,7 @@ namespace MetricsAgent.DAL
         public void Delete(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"DELETE FROM hddmetrics WHERE {id}";
+            cmd.CommandText = $"DELETE FROM hddmetrics WHERE id = {id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -36,7 +36,7 @@ namespace MetricsAgent.DAL
         public void Update(HddMetric item)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"UPDATE hddmetrics SET freesize = {item.FreeSize} WHERE {item.Id}";
+            cmd.CommandText = $"UPDATE hddmetrics SET freesize = {item.FreeSize} WHERE id = {item.Id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -63,7 +63,7 @@ namespace MetricsAgent.DAL
         public HddMetric GetById(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"SELECT * FROM hddmetrics WHERE {id}";
+            cmd.CommandText = $"SELECT * FROM hddmetrics WHERE id = {id}";
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 if (reader.Read())

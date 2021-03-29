@@ -30,7 +30,7 @@ namespace MetricsAgent.DAL
         public void Delete(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"DELETE FROM cpumetrics WHERE {id}";
+            cmd.CommandText = $"DELETE FROM cpumetrics WHERE id = {id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -38,7 +38,7 @@ namespace MetricsAgent.DAL
         public void Update(CpuMetric item)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"UPDATE cpumetrics SET value = {item.Value}, time = {item.Time.TotalSeconds} WHERE {item.Id}";
+            cmd.CommandText = $"UPDATE cpumetrics SET value = {item.Value}, time = {item.Time.TotalSeconds} WHERE id = {item.Id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -66,7 +66,7 @@ namespace MetricsAgent.DAL
         public CpuMetric GetById(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"SELECT * FROM cpumetrics WHERE {id}";
+            cmd.CommandText = $"SELECT * FROM cpumetrics WHERE id = {id}";
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 if (reader.Read())

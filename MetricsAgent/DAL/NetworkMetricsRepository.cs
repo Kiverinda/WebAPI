@@ -29,7 +29,7 @@ namespace MetricsAgent.DAL
         public void Delete(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"DELETE FROM networkmetrics WHERE {id}";
+            cmd.CommandText = $"DELETE FROM networkmetrics WHERE id = {id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -37,7 +37,7 @@ namespace MetricsAgent.DAL
         public void Update(NetworkMetric item)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"UPDATE networkmetrics SET value = {item.Value}, time = {item.Time.TotalSeconds} WHERE {item.Id}";
+            cmd.CommandText = $"UPDATE networkmetrics SET value = {item.Value}, time = {item.Time.TotalSeconds} WHERE id = {item.Id}";
             cmd.Prepare();
             cmd.ExecuteNonQuery();
         }
@@ -65,7 +65,7 @@ namespace MetricsAgent.DAL
         public NetworkMetric GetById(int id)
         {
             using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"SELECT * FROM networkmetrics WHERE {id}";
+            cmd.CommandText = $"SELECT * FROM networkmetrics WHERE id = {id}";
             using (SQLiteDataReader reader = cmd.ExecuteReader())
             {
                 if (reader.Read())
