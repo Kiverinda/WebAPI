@@ -13,7 +13,7 @@ namespace MetricsAgent.Controllers
     public class CpuMetricsAgentController : ControllerBase
     {
         private readonly ILogger<CpuMetricsAgentController> _logger;
-        private ICpuMetricsRepository _repository;
+        private readonly ICpuMetricsRepository _repository;
 
         public CpuMetricsAgentController(ICpuMetricsRepository repository, ILogger<CpuMetricsAgentController> logger)
         {
@@ -42,10 +42,7 @@ namespace MetricsAgent.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Cpu FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }
@@ -62,22 +59,9 @@ namespace MetricsAgent.Controllers
             int percentileThisList = (int)percentile;
             percentileThisList = percentileThisList * metrics.Count / 100;
 
-            var response = new AllCpuMetricsResponse()
-            {
-                Metrics = new List<CpuMetricDto>()
-            };
+            var response = metrics[percentileThisList].Value;
 
-            response.Metrics.Add(new CpuMetricDto
-            {
-                Time = metrics[percentileThisList].Time,
-                Value = metrics[percentileThisList].Value,
-                Id = metrics[percentileThisList].Id
-            });
-
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос percentile Cpu FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос percentile Cpu FromTime = {fromTime} ToTime = {toTime} percentile = {percentile}");
 
             return Ok(response);
         }

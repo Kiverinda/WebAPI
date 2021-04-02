@@ -13,7 +13,7 @@ namespace MetricsManager.Controllers
     public class AgentsController : ControllerBase
     {
         private readonly ILogger<AgentsController> _logger;
-        private IAgentsRepository _repository;
+        private readonly IAgentsRepository _repository;
 
         public AgentsController(IAgentsRepository repository, ILogger<AgentsController> logger)
         {
@@ -26,10 +26,12 @@ namespace MetricsManager.Controllers
         {
             _repository.Create(agentInfo);
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Добавление в базу агента");
-            }
+            _logger.LogInformation($"Регистрация агента: " +
+                                   $"Id = {agentInfo.Id}" +
+                                   $" IpAddress = {agentInfo.IpAddress}" +
+                                   $" Name = {agentInfo.Name}" +
+                                   $" Status = {agentInfo.Status}");
+
             return Ok();
         }
 
@@ -40,10 +42,8 @@ namespace MetricsManager.Controllers
             agent.Status = true;
             _repository.Update(agent);
 
-            if (_logger != null)
-            {
-                _logger.LogInformation($"Включение агента {agentId}");
-            }
+            _logger.LogInformation($"Включение агента Id = {agentId}");
+
             return Ok();
         }
 
@@ -54,10 +54,8 @@ namespace MetricsManager.Controllers
             agent.Status = false;
             _repository.Update(agent);
 
-            if (_logger != null)
-            {
-                _logger.LogInformation($"Отключение агента {agentId}");
-            }
+            _logger.LogInformation($"Отключение агента Id = {agentId}");
+
             return Ok();
         }
 
@@ -81,10 +79,8 @@ namespace MetricsManager.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос всех агентов");
-            }
+            _logger.LogInformation("Запрос всех агентов");
+
 
             return Ok(response);
         }

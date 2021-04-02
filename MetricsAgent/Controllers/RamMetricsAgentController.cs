@@ -12,7 +12,7 @@ namespace MetricsAgent.Controllers
     public class RamMetricsAgentController : ControllerBase
     {
         private readonly ILogger<RamMetricsAgentController> _logger;
-        private IRamMetricsRepository _repository;
+        private readonly IRamMetricsRepository _repository;
 
         public RamMetricsAgentController(IRamMetricsRepository repository, ILogger<RamMetricsAgentController> logger)
         {
@@ -40,7 +40,7 @@ namespace MetricsAgent.Controllers
 
             if (_logger != null)
             {
-                _logger.LogInformation("Запрос метрик Available RAM");
+                _logger.LogInformation("Запрос всех метрик Available RAM");
             }
 
             return Ok(response);

@@ -11,21 +11,21 @@ namespace MetricsAgentTests
 {
     public class DotNetMetricsAgentControllerUnitTests
     {
-        private ILogger<DotNetMetricsAgentController> _logger;
-
         [Fact]
         public void GetDotNetMetricsFromTimeToTimeCheckRequestSelect()
         {
             //Arrange
             var mock = new Mock<IDotNetMetricsRepository>();
+            var mockLogger = new Mock<ILogger<DotNetMetricsAgentController>>();
             TimeSpan fromTime = TimeSpan.FromSeconds(5);
             TimeSpan toTime = TimeSpan.FromSeconds(10);
             mock.Setup(a => a.GetMetricsFromTimeToTime(fromTime, toTime)).Returns(new List<DotNetMetric>()).Verifiable();
-            var controller = new DotNetMetricsAgentController(mock.Object, _logger);
+            var controller = new DotNetMetricsAgentController(mock.Object, mockLogger.Object);
             //Act
             var result = controller.GetMetricsFromTimeToTime(fromTime, toTime);
             //Assert
             mock.Verify(repository => repository.GetMetricsFromTimeToTime(fromTime, toTime), Times.AtMostOnce());
+            mockLogger.Verify();
         }
     }
 }

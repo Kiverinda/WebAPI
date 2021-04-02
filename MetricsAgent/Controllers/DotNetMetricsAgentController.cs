@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MetricsAgent.DAL;
+using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MetricsAgent.DAL;
-using MetricsAgent.Responses;
-using MetricsLibrary;
+using System;
+using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
@@ -13,7 +12,7 @@ namespace MetricsAgent.Controllers
     public class DotNetMetricsAgentController : ControllerBase
     {
         private readonly ILogger<DotNetMetricsAgentController> _logger;
-        private IDotNetMetricsRepository _repository;
+        private readonly IDotNetMetricsRepository _repository;
 
         public DotNetMetricsAgentController(IDotNetMetricsRepository repository, ILogger<DotNetMetricsAgentController> logger)
         {
@@ -42,10 +41,7 @@ namespace MetricsAgent.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик DotNet FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос метрик DotNet FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }

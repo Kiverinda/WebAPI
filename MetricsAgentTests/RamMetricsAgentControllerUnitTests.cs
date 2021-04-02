@@ -10,19 +10,19 @@ namespace MetricsAgentTests
 {
     public class RamMetricsAgentControllerUnitTests
     {
-        private ILogger<RamMetricsAgentController> _logger;
-
         [Fact]
         public void GetMetricsAvailableCheckRequestSelect()
         {
             //Arrange
+            var mockLogger = new Mock<ILogger<RamMetricsAgentController>>();
             var mock = new Mock<IRamMetricsRepository>();
             mock.Setup(a => a.GetAll()).Returns(new List<RamMetric>()).Verifiable();
-            var controller = new RamMetricsAgentController(mock.Object, _logger);
+            var controller = new RamMetricsAgentController(mock.Object, mockLogger.Object);
             //Act
             var result = controller.GetMetricsAvailableRam();
             //Assert
             mock.Verify(repository => repository.GetAll(), Times.AtMostOnce());
+            mockLogger.Verify();
         }
     }
 }

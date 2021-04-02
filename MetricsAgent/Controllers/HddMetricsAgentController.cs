@@ -11,7 +11,7 @@ namespace MetricsAgent.Controllers
     public class HddMetricsAgentController : ControllerBase
     {
         private readonly ILogger<HddMetricsAgentController> _logger;
-        private IHddMetricsRepository _repository;
+        private readonly IHddMetricsRepository _repository;
 
         public HddMetricsAgentController(IHddMetricsRepository repository, ILogger<HddMetricsAgentController> logger)
         {
@@ -37,10 +37,7 @@ namespace MetricsAgent.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Hdd");
-            }
+            _logger.LogInformation($"Запрос всех метрик Hdd");
 
             return Ok(response);
         }

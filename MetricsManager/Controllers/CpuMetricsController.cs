@@ -13,7 +13,7 @@ namespace MetricsManager.Controllers
     public class CpuMetricsController : ControllerBase
     {
         private readonly ILogger<CpuMetricsController> _logger;
-        private ICpuMetricsRepository _repository;
+        private readonly ICpuMetricsRepository _repository;
 
         public CpuMetricsController(ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
@@ -44,10 +44,7 @@ namespace MetricsManager.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Cpu FromTimeToTime для агента");
-            }
+            _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime} для агента Id = {idAgent}");
 
             return Ok(response);
         }
@@ -65,23 +62,9 @@ namespace MetricsManager.Controllers
             int percentileThisList = (int)percentile;
             percentileThisList = percentileThisList * metrics.Count / 100;
 
-            var response = new AllCpuMetricsFromAgentResponse()
-            {
-                Metrics = new List<CpuMetricManagerDto>()
-            };
+            var response = metrics[percentileThisList].Value;
 
-            response.Metrics.Add(new CpuMetricManagerDto
-            {
-                Time = metrics[percentileThisList].Time,
-                Value = metrics[percentileThisList].Value,
-                Id = metrics[percentileThisList].Id,
-                IdAgent = metrics[percentileThisList].IdAgent
-            });
-
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос percentile Cpu FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос percentile Cpu FromTime = {fromTime} ToTime = {toTime} percentile = {percentile} для агента Id = {idAgent}");
 
             return Ok(response);
         }
@@ -108,10 +91,7 @@ namespace MetricsManager.Controllers
                 });
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Cpu FromTimeToTime для кластера");
-            }
+            _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime} для кластера");
 
             return Ok(response);
         }
@@ -128,23 +108,9 @@ namespace MetricsManager.Controllers
             int percentileThisList = (int)percentile;
             percentileThisList = percentileThisList * metrics.Count / 100;
 
-            var response = new AllCpuMetricsFromAgentResponse()
-            {
-                Metrics = new List<CpuMetricManagerDto>()
-            };
+            var response = metrics[percentileThisList].Value;
 
-            response.Metrics.Add(new CpuMetricManagerDto
-            {
-                Time = metrics[percentileThisList].Time,
-                Value = metrics[percentileThisList].Value,
-                Id = metrics[percentileThisList].Id,
-                IdAgent = metrics[percentileThisList].IdAgent
-            });
-
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос percentile Cpu FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос percentile = {percentile} Cpu FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }

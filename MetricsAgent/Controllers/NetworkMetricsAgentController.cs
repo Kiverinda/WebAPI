@@ -12,7 +12,7 @@ namespace MetricsAgent.Controllers
     public class NetworkMetricsAgentController : ControllerBase
     {
         private readonly ILogger<NetworkMetricsAgentController> _logger;
-        private INetworkMetricsRepository _repository;
+        private readonly INetworkMetricsRepository _repository;
 
         public NetworkMetricsAgentController(INetworkMetricsRepository repository, ILogger<NetworkMetricsAgentController> logger)
         {
@@ -43,7 +43,7 @@ namespace MetricsAgent.Controllers
 
             if (_logger != null)
             {
-                _logger.LogInformation("Запрос метрик Network FromTimeToTime");
+                _logger.LogInformation($"Запрос метрик Network FromTime = {fromTime} ToTime = {toTime}");
             }
 
             return Ok(response);
