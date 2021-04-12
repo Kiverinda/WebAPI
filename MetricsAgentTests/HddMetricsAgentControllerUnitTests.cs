@@ -1,10 +1,12 @@
+using AutoMapper;
 using MetricsAgent.Controllers;
-using System.Collections.Generic;
-using MetricsAgent.Models;
-using Xunit;
-using Moq;
-using MetricsAgent.DAL;
+using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.DAL.Models;
+using MetricsAgent.Responses;
 using Microsoft.Extensions.Logging;
+using Moq;
+using System.Collections.Generic;
+using Xunit;
 
 namespace MetricsAgentTests
 {
@@ -16,8 +18,10 @@ namespace MetricsAgentTests
             //Arrange
             var mockLogger = new Mock<ILogger<HddMetricsAgentController>>();
             var mock = new Mock<IHddMetricsRepository>();
-            mock.Setup(a => a.GetAll()).Returns(new List<HddMetric>()).Verifiable();
-            var controller = new HddMetricsAgentController(mock.Object, mockLogger.Object);
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<HddMetricModel, HddMetricDto>());
+            IMapper mapper = config.CreateMapper();
+            mock.Setup(a => a.GetAll()).Returns(new List<HddMetricModel>()).Verifiable();
+            var controller = new HddMetricsAgentController(mapper, mock.Object, mockLogger.Object);
             //Act
             var result = controller.GetMetricsFreeHdd();
             //Assert

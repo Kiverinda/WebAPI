@@ -12,8 +12,6 @@ namespace MetricsManagerTests
 {
     public class RamMetricsControllerUnitTests
     {
-        private ILogger<RamMetricsController> _logger;
-
         [Fact] 
         public void GetMetricsFromAgentCheckRequestSelect()
         {
