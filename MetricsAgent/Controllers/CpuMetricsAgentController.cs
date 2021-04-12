@@ -25,10 +25,15 @@ namespace MetricsAgent.Controllers
             _mapper = mapper;
         }
 
+        [HttpPost("create")]
+        public IActionResult Create([FromBody] CpuMetricModel item)
+        {
+            _repository.Create(item);
+            return Ok();
+        }
+
         [HttpGet("all")]
-        public IActionResult GetAllMetrics(
-            [FromRoute] DateTimeOffset fromTime,
-            [FromRoute] DateTimeOffset toTime)
+        public IActionResult GetAllMetrics()
         {
             IList<CpuMetricModel> metrics = _repository.GetAll();
             var response = new AllCpuMetricsResponse()
@@ -41,7 +46,7 @@ namespace MetricsAgent.Controllers
                 response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
             }
 
-            _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime}");
+            _logger.LogInformation($"Запрос всех метрик Cpu");
 
             return Ok(response);
         }

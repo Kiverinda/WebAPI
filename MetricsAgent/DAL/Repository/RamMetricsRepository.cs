@@ -24,7 +24,7 @@ namespace MetricsAgent.DAL
                 new
                 {
                     available = item.Available,
-                    time = item.Time
+                    time = item.Time.ToUnixTimeSeconds()
                 });
         }
 
