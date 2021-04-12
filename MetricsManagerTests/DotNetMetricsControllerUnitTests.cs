@@ -1,12 +1,12 @@
-using MetricsManager.Controllers;
-using System.Collections.Generic;
-using MetricsManager.Models;
 using MetricsLibrary;
-using System;
-using Xunit;
-using Moq;
-using MetricsManager.DAL;
+using MetricsManager.Controllers;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 using Microsoft.Extensions.Logging;
+using Moq;
+using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace MetricsManagerTests
 {

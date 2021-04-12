@@ -1,19 +1,18 @@
-using System;
 using AutoMapper;
+using FluentMigrator.Runner;
 using MetricsAgent.DAL;
 using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Repository;
+using MetricsAgent.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data.SQLite;
-using FluentMigrator.Runner;
-using MetricsAgent.Jobs;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+using System.Data.SQLite;
 
 namespace MetricsAgent
 {
@@ -25,12 +24,12 @@ namespace MetricsAgent
         }
 
         private IConfiguration Configuration { get; }
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;";
+        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            ConfigureSqlLiteConnection(services);
+            services.AddSingleton(new SQLiteConnection(ConnectionString));
 
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
@@ -64,15 +63,15 @@ namespace MetricsAgent
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(HddMetricJob),
                 cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<DotNetMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<NetworkMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricJob),
+                cronExpression: "0/5 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
-        }
-
-        private void ConfigureSqlLiteConnection(IServiceCollection services)
-        {
-            string connectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-            var connection = new SQLiteConnection(connectionString);
-            connection.Open();
-            services.AddSingleton(connection);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)

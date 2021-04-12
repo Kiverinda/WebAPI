@@ -1,12 +1,12 @@
-using MetricsManager.Controllers;
-using System.Collections.Generic;
-using MetricsManager.Models;
 using MetricsLibrary;
-using System;
-using Xunit;
-using Moq;
-using MetricsManager.DAL;
+using MetricsManager.Controllers;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 using Microsoft.Extensions.Logging;
+using Moq;
+using System;
+using System.Collections.Generic;
+using Xunit;
 
 namespace MetricsManagerTests
 {
@@ -18,8 +18,8 @@ namespace MetricsManagerTests
             //Arrange
             var mock = new Mock<ICpuMetricsRepository>();
             var mockLogger = new Mock<ILogger<CpuMetricsController>>();
-            TimeSpan fromTime = TimeSpan.FromSeconds(5);
-            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            DateTimeOffset fromTime = DateTimeOffset.FromUnixTimeSeconds(5);
+            DateTimeOffset toTime = DateTimeOffset.FromUnixTimeSeconds(10);
             int agentId = 1;
             mock.Setup(a => a.GetMetricsFromTimeToTimeFromAgent(fromTime, toTime, agentId)).Returns(new List<CpuMetricModel>()).Verifiable();
             var controller = new CpuMetricsController(mock.Object, mockLogger.Object);
@@ -36,8 +36,8 @@ namespace MetricsManagerTests
             //Arrange
             var mockLogger = new Mock<ILogger<CpuMetricsController>>();
             var mock = new Mock<ICpuMetricsRepository>();
-            TimeSpan fromTime = TimeSpan.FromSeconds(5);
-            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            DateTimeOffset fromTime = DateTimeOffset.FromUnixTimeSeconds(5);
+            DateTimeOffset toTime = DateTimeOffset.FromUnixTimeSeconds(10);
             int agentId = 1;
             Percentile percentile = Percentile.P90;
             string sort = "value";
@@ -57,8 +57,8 @@ namespace MetricsManagerTests
             //Arrange
             var mockLogger = new Mock<ILogger<CpuMetricsController>>();
             var mock = new Mock<ICpuMetricsRepository>();
-            TimeSpan fromTime = TimeSpan.FromSeconds(5);
-            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            DateTimeOffset fromTime = DateTimeOffset.FromUnixTimeSeconds(5);
+            DateTimeOffset toTime = DateTimeOffset.FromUnixTimeSeconds(10);
             mock.Setup(a => a.GetMetricsFromTimeToTime(fromTime, toTime)).Returns(new List<CpuMetricModel>()).Verifiable();
             var controller = new CpuMetricsController(mock.Object, mockLogger.Object);
             //Act
@@ -74,8 +74,8 @@ namespace MetricsManagerTests
             //Arrange
             var mockLogger = new Mock<ILogger<CpuMetricsController>>();
             var mock = new Mock<ICpuMetricsRepository>();
-            TimeSpan fromTime = TimeSpan.FromSeconds(5);
-            TimeSpan toTime = TimeSpan.FromSeconds(10);
+            DateTimeOffset fromTime = DateTimeOffset.FromUnixTimeSeconds(5);
+            DateTimeOffset toTime = DateTimeOffset.FromUnixTimeSeconds(10);
             Percentile percentile = Percentile.P90;
             string sort = "value";
             mock.Setup(a => a.GetMetricsFromTimeToTimeOrderBy(fromTime, toTime, sort))

@@ -68,5 +68,21 @@ namespace MetricsAgent.DAL
                         id = target
                     });
         }
+
+        public IList<RamMetricModel> GetMetricsFromTimeToTime(
+            DateTimeOffset fromTime,
+            DateTimeOffset toTime)
+        {
+            using var connection = new SQLiteConnection(_connection);
+            return connection
+                .Query<RamMetricModel>(
+                    $"SELECT * From rammetrics WHERE time > @fromTime AND time < @toTime",
+                    new
+                    {
+                        fromTime = fromTime.ToUnixTimeSeconds(),
+                        toTime = toTime.ToUnixTimeSeconds()
+                    })
+                .ToList();
+        }
     }
 }

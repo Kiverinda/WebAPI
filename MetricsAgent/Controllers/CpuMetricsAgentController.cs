@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+
 
 namespace MetricsAgent.Controllers
 {
@@ -43,7 +45,12 @@ namespace MetricsAgent.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(_mapper.Map<CpuMetricDto>(metric));
+                response.Metrics.Add(new CpuMetricDto
+                {
+                    Time = metric.Time,
+                    Value = metric.Value,
+                    Id = metric.Id,
+                });
             }
 
             _logger.LogInformation($"Запрос всех метрик Cpu");
@@ -69,7 +76,9 @@ namespace MetricsAgent.Controllers
 
             _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime}");
 
-            return Ok(response);
+            string result = JsonSerializer.Serialize(response);
+
+            return Ok(result);
         }
 
         [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]

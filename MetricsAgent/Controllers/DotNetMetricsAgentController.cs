@@ -6,10 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 
 namespace MetricsAgent.Controllers
 {
-    [Route("api/metrics/dotnet/errors-count")]
+    [Route("api/metrics/dotnet")]
     [ApiController]
     public class DotNetMetricsAgentController : ControllerBase
     {
@@ -42,7 +43,9 @@ namespace MetricsAgent.Controllers
 
             _logger.LogInformation($"Запрос метрик DotNet FromTime = {fromTime} ToTime = {toTime}");
 
-            return Ok(response);
+            string result = JsonSerializer.Serialize(response);
+
+            return Ok(result);
         }
     }
 }

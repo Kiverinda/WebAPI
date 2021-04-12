@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace MetricsManager.DAL
+namespace MetricsManager.DAL.Interfaces
 {
     public interface IRepository<T> where T : class
     {

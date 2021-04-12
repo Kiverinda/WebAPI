@@ -1,17 +1,16 @@
-﻿using MetricsManager.Models;
+﻿using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 
-namespace MetricsManager.DAL
-{ 
-    public interface IAgentsRepository : IRepository<AgentModel>
-    {
-    }
+namespace MetricsManager.DAL.Repository
+{
 
     public class AgentsRepository : IAgentsRepository
     {
-        private SQLiteConnection _connection;
+        private readonly SQLiteConnection _connection;
+
         public AgentsRepository(SQLiteConnection connection)
         {
             _connection = connection;

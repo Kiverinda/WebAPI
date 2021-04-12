@@ -76,13 +76,16 @@ namespace MetricsAgent.DAL.Repository
             DateTimeOffset toTime)
         {
             using var connection = new SQLiteConnection(_connection);
+            var FromTime = fromTime.ToUnixTimeSeconds();
+            var ToTime = toTime.ToUnixTimeSeconds();
+
             return connection
                 .Query<CpuMetricModel>(
-                    $"SELECT id, time, value From cpumetrics WHERE time > @fromTime AND time < @toTime",
+                    $"SELECT id, time, value From cpumetrics WHERE time > @FromTime AND time < @ToTime",
                     new
                     {
-                        fromTime = fromTime.ToUnixTimeSeconds(),
-                        toTime = toTime.ToUnixTimeSeconds()
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds()
                     })
                 .ToList();
         }

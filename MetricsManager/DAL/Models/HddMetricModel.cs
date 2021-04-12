@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace MetricsManager.Models
+namespace MetricsManager.DAL.Models
 {
-    public class RamMetricModel
+    public class HddMetricModel
     {
         public int Id { get; set; }
         public double Value { get; set; }
-        public TimeSpan Time { get; set; }
+        public DateTimeOffset Time { get; set; }
         public int IdAgent { get; set; }
     }
 }
