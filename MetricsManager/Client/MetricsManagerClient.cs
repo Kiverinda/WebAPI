@@ -12,7 +12,6 @@ namespace MetricsManager.Client
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<MetricsManagerClient> _logger;
-        private string format = "q";
 
         public MetricsManagerClient(HttpClient httpClient, ILogger<MetricsManagerClient> logger)
         {
@@ -23,7 +22,7 @@ namespace MetricsManager.Client
         public AllCpuMetricsApiResponse GetAllCpuMetrics(GetAllCpuMetricsApiRequest request)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.Addres}/api/metrics/cpu/from/{request.FromTime.ToString(format)}/to/{request.ToTime.ToString(format)}");
+                $"{request.Addres}/api/metrics/cpu/from/{request.FromTime:o}/to/{request.ToTime:o}");
             try
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
@@ -44,7 +43,7 @@ namespace MetricsManager.Client
         public AllDotNetMetricsApiResponse GetAllDotNetMetrics(GetAllDotNetMetricsApiRequest request)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.Addres}/api/metrics/dotnet/from/{request.FromTime}/to/{request.ToTime}");
+                $"{request.Addres}/api/metrics/dotnet/from/{request.FromTime:o}/to/{request.ToTime:o}");
             try
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
@@ -65,7 +64,7 @@ namespace MetricsManager.Client
         public AllHddMetricsApiResponse GetAllHddMetrics(GetAllHddMetricsApiRequest request)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.Addres}/api/metrics/hdd/from/{request.FromTime}/to/{request.ToTime}");
+                $"{request.Addres}/api/metrics/hdd/from/{request.FromTime:o}/to/{request.ToTime:o}");
             try
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
@@ -86,7 +85,7 @@ namespace MetricsManager.Client
         public AllNetworkMetricsApiResponse GetAllNetworkMetrics(GetAllNetworkMetricsApiRequest request)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.Addres}/api/metrics/network/from/{request.FromTime}/to/{request.ToTime}");
+                $"{request.Addres}/api/metrics/network/from/{request.FromTime:o}/to/{request.ToTime:o}");
             try
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;
@@ -107,7 +106,7 @@ namespace MetricsManager.Client
         public AllRamMetricsApiResponse GetAllRamMetrics(GetAllRamMetricsApiRequest request)
         {
             var httpRequest = new HttpRequestMessage(HttpMethod.Get,
-                $"{request.Addres}/api/metrics/ram/from/{request.FromTime}/to/{request.ToTime}");
+                $"{request.Addres}/api/metrics/ram/from/{request.FromTime:o}/to/{request.ToTime:o}");
             try
             {
                 HttpResponseMessage response = _httpClient.SendAsync(httpRequest).Result;

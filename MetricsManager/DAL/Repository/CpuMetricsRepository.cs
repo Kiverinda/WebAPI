@@ -130,9 +130,9 @@ namespace MetricsManager.DAL.Repository
         public DateTimeOffset LastTime()
         {
             using var connection = new SQLiteConnection(ConnectionString);
-            var res = connection.QueryFirstOrDefault("SELECT time FROM cpumetrics ORDER BY time DESC LIMIT 1");
-            long result = res ?? 0;
-            return DateTimeOffset.FromUnixTimeSeconds(result);
+            var res = connection.QueryFirstOrDefault<CpuMetricModel>("SELECT * FROM cpumetrics ORDER BY time DESC LIMIT 1");
+            var result = res ?? new CpuMetricModel();
+            return result.Time;
         }
     }
 }
