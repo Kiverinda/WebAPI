@@ -10,17 +10,22 @@ namespace MetricsManager.DAL.Repository
 {
     public class DotNetMetricsRepository : IDotNetMetricsRepository
     {
-        private readonly SQLiteConnection _connection;
+        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
-        public DotNetMetricsRepository(SQLiteConnection connection)
+        //public DotNetMetricsRepository(SQLiteConnection connection)
+        //{
+        //    _connection = connection;
+        //    SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
+        //}
+
+        public DotNetMetricsRepository()
         {
-            _connection = connection;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(DotNetMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("INSERT INTO dotnetmetrics(value, time, idagent) VALUES(@value, @time, @idagent)",
                 new
                 {
@@ -32,7 +37,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("DELETE FROM dotnetmetrics WHERE id=@id",
                 new
                 {
@@ -42,7 +47,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Update(DotNetMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("UPDATE dotnetmetrics SET value = @value, time = @time WHERE id = @id",
                 new
                 {
@@ -54,7 +59,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<DotNetMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             var q = connection
                 .Query<DotNetMetricModel>($"SELECT id, time, value From dotnetmetrics")
                 .ToList();
@@ -63,7 +68,7 @@ namespace MetricsManager.DAL.Repository
 
         public DotNetMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .QuerySingle<DotNetMetricModel>("SELECT Id, Time, Value FROM dotnetmetrics WHERE id = @id",
                     new
@@ -74,7 +79,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<DotNetMetricModel> GetMetricsFromTimeToTime(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<DotNetMetricModel>(
                     $"SELECT id, time, value From dotnetmetrics WHERE time > @fromTime AND time < @toTime",
@@ -88,7 +93,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<DotNetMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<DotNetMetricModel>(
                     $"SELECT id, time, value From dotnetmetrics WHERE time > @fromTime AND time < @toTime AND idagent = @IdAgent",
@@ -103,7 +108,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<DotNetMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<DotNetMetricModel>($"SELECT * FROM dotnetmetrics WHERE time > @fromTime AND time < @toTime ORDER BY {field}",
                     new
@@ -116,7 +121,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<DotNetMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field, int idAgent)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<DotNetMetricModel>($"SELECT * FROM dotnetmetrics WHERE time > @fromTime AND time < @toTime AND idagent = @IdAgent ORDER BY {field}",
                     new
@@ -130,7 +135,7 @@ namespace MetricsManager.DAL.Repository
 
         public DotNetMetricModel LastLine()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .QuerySingle<DotNetMetricModel>("SELECT * FROM dotnetmetrics ORDER BY time DESC LIMIT 1");
         }

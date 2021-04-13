@@ -10,16 +10,16 @@ namespace MetricsManager.DAL.Repository
 {
     public class HddMetricsRepository : IHddMetricsRepository
     {
-        private readonly SQLiteConnection _connection;
+        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
-        public HddMetricsRepository(SQLiteConnection connection)
+        public HddMetricsRepository()
         {
-            _connection = connection;
+            SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(HddMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("INSERT INTO hddmetrics (value, time, idagent) VALUES(@value, @time, @idagent)",
                 new
                 {
@@ -31,7 +31,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("DELETE FROM hddmetrics WHERE id=@id",
                 new
                 {
@@ -41,7 +41,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Update(HddMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("UPDATE hddmetrics SET value = @value, time = @time WHERE id = @id",
                 new
                 {
@@ -53,7 +53,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<HddMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<HddMetricModel>($"SELECT * From hddmetrics")
                 .ToList();
@@ -61,7 +61,7 @@ namespace MetricsManager.DAL.Repository
 
         public HddMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .QuerySingle<HddMetricModel>("SELECT * FROM hddmetrics WHERE id = @id",
                     new
@@ -72,7 +72,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<HddMetricModel> GetMetricsFromTimeToTime(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime",
                 new
                     {
@@ -84,7 +84,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<HddMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent",
                     new
                     {
@@ -97,7 +97,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<HddMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime ORDER BY {field}",
                     new
                     {
@@ -109,7 +109,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<HddMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field, int idAgent)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent ORDER BY {field} ",
                     new
                     {
@@ -122,7 +122,7 @@ namespace MetricsManager.DAL.Repository
 
         public HddMetricModel LastLine()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .QuerySingle<HddMetricModel>("SELECT * FROM hddmetrics ORDER BY time DESC LIMIT 1");
         }

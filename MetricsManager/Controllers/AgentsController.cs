@@ -27,7 +27,7 @@ namespace MetricsManager.Controllers
 
             _logger.LogInformation($"Регистрация агента: " +
                                    $"Id = {agentInfo.Id}" +
-                                   $" IpAddress = {agentInfo.IpAddress}" +
+                                   $" IpAddress = {agentInfo.Ipaddres}" +
                                    $" Name = {agentInfo.Name}" +
                                    $" Status = {agentInfo.Status}");
 
@@ -73,7 +73,7 @@ namespace MetricsManager.Controllers
                 {
                     Id = metric.Id,
                     Status = metric.Status,
-                    IpAddress = metric.IpAddress,
+                    Ipaddres = metric.Ipaddres,
                     Name = metric.Name
                 });
             }

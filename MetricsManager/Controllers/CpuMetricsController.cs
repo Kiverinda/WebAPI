@@ -1,16 +1,11 @@
 ﻿using AutoMapper;
 using MetricsLibrary;
-using MetricsManager.Client;
-using MetricsManager.Client.ApiRequests;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
-using MetricsManager.Client.ApiResponses;
 
 namespace MetricsManager.Controllers
 {
@@ -21,33 +16,13 @@ namespace MetricsManager.Controllers
         private readonly ILogger<CpuMetricsController> _logger;
         private readonly ICpuMetricsRepository _repository;
         private readonly IMapper _mapper;
-        private readonly IMetricsManagerClient _metricsAgentClient;
 
-        public CpuMetricsController(IMapper mapper, ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger, IMetricsManagerClient metricsAgentClient)
+        public CpuMetricsController(IMapper mapper, ICpuMetricsRepository repository, ILogger<CpuMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
-            _metricsAgentClient = metricsAgentClient;
             _mapper = mapper;
         }
-
-
-        [HttpGet("all")]
-        public IActionResult GetMetricsFromAgent()
-        {
-            DateTimeOffset fromTime = DateTimeOffset.FromUnixTimeSeconds(16181676);
-            DateTimeOffset toTime = DateTimeOffset.FromUnixTimeSeconds(20000000000);
-
-            var metrics = _metricsAgentClient.GetAllCpuMetrics(new GetAllCpuMetricsApiRequest
-            {
-                FromTime = fromTime,
-                ToTime = toTime,
-                Addres = "http://localhost:5000"
-            });
-
-            return Ok(metrics);
-        }
-
 
         [HttpGet("agent/{idAgent}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent(
@@ -56,20 +31,14 @@ namespace MetricsManager.Controllers
             [FromRoute] DateTimeOffset toTime)
         {
             var metrics = _repository.GetMetricsFromTimeToTimeFromAgent(fromTime, toTime, idAgent);
-            var response = new AllCpuMetricsFromAgentResponse()
+            var response = new AllCpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricManagerDto>()
             };
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricManagerDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id,
-                    IdAgent = metric.IdAgent
-                });
+                response.Metrics.Add(_mapper.Map<CpuMetricManagerDto>(metric));
             }
 
             _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime} для агента Id = {idAgent}");
@@ -103,20 +72,14 @@ namespace MetricsManager.Controllers
                     [FromRoute] DateTimeOffset toTime)
         {
             var metrics = _repository.GetMetricsFromTimeToTime(fromTime, toTime);
-            var response = new AllCpuMetricsFromAgentResponse()
+            var response = new AllCpuMetricsResponse()
             {
                 Metrics = new List<CpuMetricManagerDto>()
             };
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new CpuMetricManagerDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id,
-                    IdAgent = metric.IdAgent
-                });
+                response.Metrics.Add(_mapper.Map<CpuMetricManagerDto>(metric));
             }
 
             _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime} для кластера");

@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 namespace MetricsAgent.Controllers
 {
@@ -43,9 +42,7 @@ namespace MetricsAgent.Controllers
 
             _logger.LogInformation($"Запрос метрик DotNet FromTime = {fromTime} ToTime = {toTime}");
 
-            string result = JsonSerializer.Serialize(response);
-
-            return Ok(result);
+            return Ok(response);
         }
     }
 }

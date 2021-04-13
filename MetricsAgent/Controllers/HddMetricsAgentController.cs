@@ -1,12 +1,11 @@
-﻿using System;
-using AutoMapper;
+﻿using AutoMapper;
 using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Models;
 using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using System.Text.Json;
 
 namespace MetricsAgent.Controllers
 {
@@ -63,9 +62,7 @@ namespace MetricsAgent.Controllers
 
             _logger.LogInformation($"Запрос метрик Hdd FromTime = {fromTime} ToTime = {toTime}");
 
-            string result = JsonSerializer.Serialize(response);
-
-            return Ok(result);
+            return Ok(response);
         }
     }
 }

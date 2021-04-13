@@ -1,4 +1,5 @@
-﻿using MetricsLibrary;
+﻿using AutoMapper;
+using MetricsLibrary;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.Responses;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +15,13 @@ namespace MetricsManager.Controllers
     {
         private readonly ILogger<NetworkMetricsController> _logger;
         private readonly INetworkMetricsRepository _repository;
+        private readonly IMapper _mapper;
 
-        public NetworkMetricsController(INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
+        public NetworkMetricsController(IMapper mapper, INetworkMetricsRepository repository, ILogger<NetworkMetricsController> logger)
         {
             _repository = repository;
             _logger = logger;
+            _mapper = mapper;
         }
 
         [HttpGet("agent/{idAgent}/from/{fromTime}/to/{toTime}")]
@@ -35,19 +38,10 @@ namespace MetricsManager.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricManagerDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id,
-                    IdAgent = metric.IdAgent
-                });
+                response.Metrics.Add(_mapper.Map<NetworkMetricManagerDto>(metric));
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Network FromTimeToTime для агента");
-            }
+            _logger.LogInformation($"Запрос метрик Network FromTime = {fromTime} ToTime = {toTime} для агента Id = {idAgent}");
 
             return Ok(response);
         }
@@ -65,29 +59,15 @@ namespace MetricsManager.Controllers
             int percentileThisList = (int)percentile;
             percentileThisList = percentileThisList * metrics.Count / 100;
 
-            var response = new AllNetworkMetricsResponse()
-            {
-                Metrics = new List<NetworkMetricManagerDto>()
-            };
+            var response = metrics[percentileThisList].Value;
 
-            response.Metrics.Add(new NetworkMetricManagerDto
-            {
-                Time = metrics[percentileThisList].Time,
-                Value = metrics[percentileThisList].Value,
-                Id = metrics[percentileThisList].Id,
-                IdAgent = metrics[percentileThisList].IdAgent
-            });
-
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос percentile Network FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос percentile DotNet FromTime = {fromTime} ToTime = {toTime} percentile = {percentile} для агента Id = {idAgent}");
 
             return Ok(response);
         }
 
         [HttpGet("cluster/from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsFromAllCluster(
+        public IActionResult GetMetricsFromCluster(
                     [FromRoute] DateTimeOffset fromTime,
                     [FromRoute] DateTimeOffset toTime)
         {
@@ -99,19 +79,10 @@ namespace MetricsManager.Controllers
 
             foreach (var metric in metrics)
             {
-                response.Metrics.Add(new NetworkMetricManagerDto
-                {
-                    Time = metric.Time,
-                    Value = metric.Value,
-                    Id = metric.Id,
-                    IdAgent = metric.IdAgent
-                });
+                response.Metrics.Add(_mapper.Map<NetworkMetricManagerDto>(metric));
             }
 
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос метрик Network FromTimeToTime для кластера");
-            }
+            _logger.LogInformation($"Запрос метрик Network FromTime = {fromTime} ToTime = {toTime} для кластера");
 
             return Ok(response);
         }
@@ -128,23 +99,9 @@ namespace MetricsManager.Controllers
             int percentileThisList = (int)percentile;
             percentileThisList = percentileThisList * metrics.Count / 100;
 
-            var response = new AllNetworkMetricsResponse()
-            {
-                Metrics = new List<NetworkMetricManagerDto>()
-            };
+            var response = metrics[percentileThisList].Value;
 
-            response.Metrics.Add(new NetworkMetricManagerDto
-            {
-                Time = metrics[percentileThisList].Time,
-                Value = metrics[percentileThisList].Value,
-                Id = metrics[percentileThisList].Id,
-                IdAgent = metrics[percentileThisList].IdAgent
-            });
-
-            if (_logger != null)
-            {
-                _logger.LogInformation("Запрос percentile Network FromTimeToTime");
-            }
+            _logger.LogInformation($"Запрос percentile = {percentile} Network FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }

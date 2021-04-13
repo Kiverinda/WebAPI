@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace MetricsManager.Responses
 {
-    public class AllCpuMetricsFromAgentResponse
+    public class AllCpuMetricsResponse
     {
         public List<CpuMetricManagerDto> Metrics { get; set; }
     }

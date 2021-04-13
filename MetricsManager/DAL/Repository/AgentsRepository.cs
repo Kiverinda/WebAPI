@@ -3,85 +3,69 @@ using MetricsManager.DAL.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
+using System.Linq;
+using Dapper;
 
 namespace MetricsManager.DAL.Repository
 {
 
     public class AgentsRepository : IAgentsRepository
     {
-        private readonly SQLiteConnection _connection;
-
-        public AgentsRepository(SQLiteConnection connection)
-        {
-            _connection = connection;
-        }
+        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
         public void Create(AgentModel item)
         {
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"INSERT INTO agents(status, ipaddress, name) VALUES({Convert.ToInt32(item.Status)}, '{item.IpAddress}', '{item.Name}')";
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
+            using var connection = new SQLiteConnection(ConnectionString);
+            connection.Execute($"INSERT INTO agents(status, ipaddress, name) VALUES(@status, @ipaddress, @name)",
+                new
+                {
+                    status = Convert.ToInt32(item.Status),
+                    ipaddress = item.Ipaddres,
+                    name = item.Name
+                });
         }
 
-        public void Delete(int id)
+        public void Delete(int target)
         {
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"DELETE FROM agents WHERE id = {id}";
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
+            using var connection = new SQLiteConnection(ConnectionString);
+            connection.Execute($"DELETE FROM agents WHERE id = @id",
+                new
+                {
+                    id = target
+                });
         }
 
         public void Update(AgentModel item)
         {
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"UPDATE agents SET status = {Convert.ToInt32(item.Status)}, ipaddress = '{item.IpAddress}', name = '{item.Name}' WHERE id = {item.Id}";
-            cmd.Prepare();
-            cmd.ExecuteNonQuery();
+            using var connection = new SQLiteConnection(ConnectionString);
+            connection.Execute($"UPDATE agents SET status = @status, ipaddress = @ipaddress, name = @name WHERE id = @id",
+                new
+                {
+                    status = Convert.ToInt32(item.Status),
+                    ipaddress = item.Ipaddres,
+                    name = item.Name,
+                    id = item.Id
+                });
         }
 
         public IList<AgentModel> GetAll()
         {
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = "SELECT * FROM agents";
-            var returnList = new List<AgentModel>();
-            using (SQLiteDataReader reader = cmd.ExecuteReader())
-            {
-                while (reader.Read())
-                {
-                    returnList.Add(new AgentModel
-                    {
-                        Id = reader.GetInt32(0),
-                        Status = Convert.ToBoolean(reader.GetInt32(1)),
-                        IpAddress = reader.GetString(2),
-                        Name = reader.GetString(3)
-                    });
-                }
-            }
-            return returnList;
+            using var connection = new SQLiteConnection(ConnectionString);
+            var q = connection
+                .Query<AgentModel>($"SELECT * From agents")
+                .ToList();
+            return q;
         }
 
-        public AgentModel GetById(int id)
+        public AgentModel GetById(int target)
         {
-            using var cmd = new SQLiteCommand(_connection);
-            cmd.CommandText = $"SELECT * FROM agents WHERE id = {id}";
-            using (SQLiteDataReader reader = cmd.ExecuteReader())
-            {
-                if (reader.Read())
-                {
-                    return new AgentModel
+            using var connection = new SQLiteConnection(ConnectionString);
+            return connection
+                .QuerySingle<AgentModel>("SELECT * FROM agents WHERE id = @id",
+                    new
                     {
-                        Id = reader.GetInt32(0),
-                        Status = Convert.ToBoolean(reader.GetInt32(1)),
-                        IpAddress = reader.GetString(2),
-                        Name = reader.GetString(3)
-                    };
-                }
-                else
-                {
-                    return null;
-                }
-            }
+                        id = target
+                    });
         }
     }
 }

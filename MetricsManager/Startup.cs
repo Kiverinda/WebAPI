@@ -1,21 +1,20 @@
-using System;
+using AutoMapper;
 using FluentMigrator.Runner;
+using MetricsManager.Client;
+using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Repository;
+using MetricsManager.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data.SQLite;
-using System.Net.Http;
-using MetricsManager.DAL.Interfaces;
-using MetricsManager.DAL.Repository;
-using AutoMapper;
-using MetricsManager.Client;
-using MetricsManager.Jobs;
 using Polly;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+using System;
+using System.Data.SQLite;
 
 namespace MetricsManager
 {
@@ -36,7 +35,6 @@ namespace MetricsManager
                 TimeSpan.FromMilliseconds(1000)));
 
             services.AddControllers();
-            services.AddSingleton(new SQLiteConnection(ConnectionString));
 
             services.AddSingleton<IAgentsRepository, AgentsRepository>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();

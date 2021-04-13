@@ -10,17 +10,16 @@ namespace MetricsAgent.DAL.Repository
 {
     public class NetworkMetricsRepository : INetworkMetricsRepository
     {
-        private readonly SQLiteConnection _connection;
-        
-        public NetworkMetricsRepository(SQLiteConnection connection)
+        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+
+        public NetworkMetricsRepository()
         {
-            _connection = connection;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(NetworkMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("INSERT INTO networkmetrics(value, time) VALUES(@value, @time)",
                 new
                 {
@@ -31,7 +30,7 @@ namespace MetricsAgent.DAL.Repository
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("DELETE FROM networkmetrics WHERE id=@id",
                 new
                 {
@@ -41,7 +40,7 @@ namespace MetricsAgent.DAL.Repository
 
         public void Update(NetworkMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             connection.Execute("UPDATE networkmetrics SET value = @value, time = @time WHERE id = @id",
                 new
                 {
@@ -53,7 +52,7 @@ namespace MetricsAgent.DAL.Repository
 
         public IList<NetworkMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<NetworkMetricModel>($"SELECT id, time, value From networkmetrics")
                 .ToList();
@@ -61,7 +60,7 @@ namespace MetricsAgent.DAL.Repository
 
         public NetworkMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .QuerySingle<NetworkMetricModel>("SELECT Id, Time, Value FROM networkmetrics WHERE id = @id",
                     new
@@ -74,7 +73,7 @@ namespace MetricsAgent.DAL.Repository
             DateTimeOffset fromTime,
             DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(ConnectionString);
             return connection
                 .Query<NetworkMetricModel>(
                     $"SELECT id, time, value From networkmetrics WHERE time > @fromTime AND time < @toTime",

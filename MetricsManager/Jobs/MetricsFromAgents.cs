@@ -26,10 +26,10 @@ namespace MetricsManager.Jobs
         public Task Execute(IJobExecutionContext context)
         {
             DateTimeOffset toTime = DateTimeOffset.UtcNow;
-            DateTimeOffset fromTime = _provider.GetService<ICpuMetricsRepository>()?.LastLine()?.Time ?? DateTimeOffset.FromUnixTimeSeconds(0);
+            DateTimeOffset fromTime = _provider.GetService<ICpuMetricsRepository>().LastTime();
             IList<AgentModel> agents = _provider.GetService<IAgentsRepository>()?.GetAll();
             
-            if (agents.Count != 0)
+            if (agents != null && agents.Count != 0)
             {
                 foreach (var agent in agents)
                 {
@@ -39,10 +39,10 @@ namespace MetricsManager.Jobs
                         {
                             FromTime = fromTime,
                             ToTime = toTime,
-                            Addres = agent.IpAddress
+                            Addres = agent.Ipaddres
                         });
 
-                        if (allCpuMetrics.Metrics != null)
+                        if (allCpuMetrics != null)
                         {
                             foreach (var metric in allCpuMetrics.Metrics)
                             {
@@ -59,10 +59,10 @@ namespace MetricsManager.Jobs
                         {
                             FromTime = fromTime,
                             ToTime = toTime,
-                            Addres = agent.IpAddress
+                            Addres = agent.Ipaddres
                         });
 
-                        if (allDotNetMetrics.Metrics != null)
+                        if (allDotNetMetrics != null)
                         {
                             foreach (var metric in allDotNetMetrics.Metrics)
                             {
@@ -79,10 +79,10 @@ namespace MetricsManager.Jobs
                         {
                             FromTime = fromTime,
                             ToTime = toTime,
-                            Addres = agent.IpAddress
+                            Addres = agent.Ipaddres
                         });
 
-                        if (allNetworkMetrics.Metrics != null)
+                        if (allNetworkMetrics != null)
                         {
                             foreach (var metric in allNetworkMetrics.Metrics)
                             {
@@ -99,10 +99,10 @@ namespace MetricsManager.Jobs
                         {
                             FromTime = fromTime,
                             ToTime = toTime,
-                            Addres = agent.IpAddress
+                            Addres = agent.Ipaddres
                         });
 
-                        if (allRamMetrics.Metrics != null)
+                        if (allRamMetrics != null)
                         {
                             foreach (var metric in allRamMetrics.Metrics)
                             {
@@ -119,10 +119,10 @@ namespace MetricsManager.Jobs
                         {
                             FromTime = fromTime,
                             ToTime = toTime,
-                            Addres = agent.IpAddress
+                            Addres = agent.Ipaddres
                         });
 
-                        if (allHddMetrics.Metrics != null)
+                        if (allHddMetrics != null)
                         {
                             foreach (var metric in allHddMetrics.Metrics)
                             {
