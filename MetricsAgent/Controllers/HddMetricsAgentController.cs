@@ -24,7 +24,18 @@ namespace MetricsAgent.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("left")]
+        /// <summary>
+        /// Получение всех метрик Hdd
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/hdd/all
+        ///
+        /// </remarks>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
+        [HttpGet("all")]
         public IActionResult GetMetricsFreeHdd()
         {
             IList<HddMetricModel> metrics = _repository.GetAll();
@@ -44,6 +55,20 @@ namespace MetricsAgent.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получение всех метрик Hdd в заданном диапазоне времени
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/hdd/from/{fromTime}/to/{toTime}
+        ///
+        /// </remarks>
+        /// <param name="fromTime">начальная метка времени в формате DateTimeOffset</param>
+        /// <param name="toTime">конечная метка времени в формате DateTimeOffset</param>
+        /// <returns>Список метрик, которые были сохранены в репозитории и соответствуют заданному диапазону времени</returns>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromTimeToTime(
             [FromRoute] DateTimeOffset fromTime,
