@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
 {
-    [Route("api/metrics/dotnet/errors-count")]
+    [Route("api/metrics/dotnet")]
     [ApiController]
     public class DotNetMetricsAgentController : ControllerBase
     {

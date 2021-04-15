@@ -4,6 +4,7 @@ using MetricsAgent.DAL.Models;
 using MetricsAgent.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace MetricsAgent.Controllers
@@ -39,6 +40,27 @@ namespace MetricsAgent.Controllers
             }
 
             _logger.LogInformation("Запрос всех метрик Hdd");
+
+            return Ok(response);
+        }
+
+        [HttpGet("from/{fromTime}/to/{toTime}")]
+        public IActionResult GetMetricsFromTimeToTime(
+            [FromRoute] DateTimeOffset fromTime,
+            [FromRoute] DateTimeOffset toTime)
+        {
+            IList<HddMetricModel> metrics = _repository.GetMetricsFromTimeToTime(fromTime, toTime);
+            var response = new AllHddMetricsResponse()
+            {
+                Metrics = new List<HddMetricDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
+            }
+
+            _logger.LogInformation($"Запрос метрик Hdd FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }

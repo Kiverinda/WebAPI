@@ -1,10 +1,9 @@
-﻿using System;
-using MetricsManager.Models;
-using System.Collections.Generic;
+﻿using MetricsManager.DAL.Interfaces;
+using MetricsManager.DAL.Models;
+using MetricsManager.Responses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using MetricsManager.DAL;
-using MetricsManager.Responses;
+using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {
@@ -28,33 +27,33 @@ namespace MetricsManager.Controllers
 
             _logger.LogInformation($"Регистрация агента: " +
                                    $"Id = {agentInfo.Id}" +
-                                   $" IpAddress = {agentInfo.IpAddress}" +
+                                   $" IpAddress = {agentInfo.Ipaddress}" +
                                    $" Name = {agentInfo.Name}" +
                                    $" Status = {agentInfo.Status}");
 
             return Ok();
         }
 
-        [HttpPut("enable/{agentId}")]
-        public IActionResult EnableAgentById([FromRoute] int agentId)
+        [HttpPut("enable/{Idagent}")]
+        public IActionResult EnableAgentById([FromRoute] int Idagent)
         {
-            AgentModel agent = _repository.GetById(agentId);
+            AgentModel agent = _repository.GetById(Idagent);
             agent.Status = true;
             _repository.Update(agent);
 
-            _logger.LogInformation($"Включение агента Id = {agentId}");
+            _logger.LogInformation($"Включение агента Id = {Idagent}");
 
             return Ok();
         }
 
-        [HttpPut("disable/{agentId}")]
-        public IActionResult DisableAgentById([FromRoute] int agentId)
+        [HttpPut("disable/{Idagent}")]
+        public IActionResult DisableAgentById([FromRoute] int Idagent)
         {
-            AgentModel agent = _repository.GetById(agentId);
+            AgentModel agent = _repository.GetById(Idagent);
             agent.Status = false;
             _repository.Update(agent);
 
-            _logger.LogInformation($"Отключение агента Id = {agentId}");
+            _logger.LogInformation($"Отключение агента Id = {Idagent}");
 
             return Ok();
         }
@@ -74,7 +73,7 @@ namespace MetricsManager.Controllers
                 {
                     Id = metric.Id,
                     Status = metric.Status,
-                    IpAddress = metric.IpAddress,
+                    Ipaddress = metric.Ipaddress,
                     Name = metric.Name
                 });
             }

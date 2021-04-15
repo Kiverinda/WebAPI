@@ -1,19 +1,22 @@
 using System;
 using AutoMapper;
+using FluentMigrator.Runner;
 using MetricsAgent.DAL;
 using MetricsAgent.DAL.Interfaces;
 using MetricsAgent.DAL.Repository;
+using MetricsAgent.Jobs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Data.SQLite;
-using FluentMigrator.Runner;
-using MetricsAgent.Jobs;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
+using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 
 namespace MetricsAgent
 {
@@ -25,13 +28,12 @@ namespace MetricsAgent
         }
 
         private IConfiguration Configuration { get; }
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;";
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            ConfigureSqlLiteConnection(services);
 
+            services.AddSingleton<ISqlSettingsProvider, SqlSettingsProvider>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
@@ -45,7 +47,7 @@ namespace MetricsAgent
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSQLite()
-                    .WithGlobalConnectionString(ConnectionString)
+                    .WithGlobalConnectionString(new SqlSettingsProvider().GetConnectionString())
                     .ScanIn(typeof(Startup).Assembly).For.Migrations()
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
@@ -64,15 +66,41 @@ namespace MetricsAgent
             services.AddSingleton(new JobSchedule(
                 jobType: typeof(HddMetricJob),
                 cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<DotNetMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricJob),
+                cronExpression: "0/5 * * * * ?"));
+            services.AddSingleton<NetworkMetricJob>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricJob),
+                cronExpression: "0/5 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
-        }
 
-        private void ConfigureSqlLiteConnection(IServiceCollection services)
-        {
-            string connectionString = "Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
-            var connection = new SQLiteConnection(connectionString);
-            connection.Open();
-            services.AddSingleton(connection);
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API сервиса агента сбора метрик",
+                    Description = "Страница для тестирования работы API",
+                    TermsOfService = new Uri("https://coderda.com"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Kiverin",
+                        Email = string.Empty,
+                        Url = new Uri("https://coderda.com"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Free license",
+                        Url = new Uri("https://coderda.com"),
+                    }
+                });
+                var xmlFile =
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
@@ -92,6 +120,13 @@ namespace MetricsAgent
             });
             
             migrationRunner.MigrateUp();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервиса агента сбора метрик");
+                c.RoutePrefix = string.Empty;
+            });
         }
     }
 }

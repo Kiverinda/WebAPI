@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
+
 namespace MetricsAgent.Controllers
 {
     [Route("api/metrics/cpu")]
@@ -24,7 +25,17 @@ namespace MetricsAgent.Controllers
             _logger = logger;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Создание новой метрики CPU
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/cpu/create
+        ///
+        /// </remarks>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
         [HttpPost("create")]
         public IActionResult Create([FromBody] CpuMetricModel item)
         {
@@ -32,6 +43,17 @@ namespace MetricsAgent.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Получение всех метрик CPU
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/cpu/all
+        ///
+        /// </remarks>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
         [HttpGet("all")]
         public IActionResult GetAllMetrics()
         {
@@ -51,6 +73,20 @@ namespace MetricsAgent.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получение всех метрик CPU в заданном диапазоне времени
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/cpu/from/{fromTime}/to/{toTime}
+        ///
+        /// </remarks>
+        /// <param name="fromTime">начальная метка времени в формате DateTimeOffset</param>
+        /// <param name="toTime">конечная метка времени в формате DateTimeOffset</param>
+        /// <returns>Список метрик, которые были сохранены в репозитории и соответствуют заданному диапазону времени</returns>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
         [HttpGet("from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromTimeToTime(
             [FromRoute] DateTimeOffset fromTime,
@@ -72,6 +108,21 @@ namespace MetricsAgent.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Получение заданного перцентиля для метрик CPU в заданном диапазоне времени
+        /// </summary>
+        /// <remarks>
+        /// Пример запроса:
+        ///
+        /// GET api/metrics/cpu/from/{fromTime}/to/{toTime}/percentiles/{percentile}
+        ///
+        /// </remarks>
+        /// <param name="fromTime">начальная метка времени в формате DateTimeOffset</param>
+        /// <param name="toTime">конечная метка времени в формате DateTimeOffset</param>
+        /// <param name="percentile">требуемый перцентиль из Enum Percentile</param>
+        /// <returns>Перцентиль для метрик, сохраненных в репозитории и соответствующих заданному диапазону времени</returns>
+        /// <response code="200">Удачное выполнение запроса</response>
+        /// <response code="400">Ошибка в запросе</response>
         [HttpGet("from/{fromTime}/to/{toTime}/percentiles/{percentile}")]
         public IActionResult GetMetricsFromTimeToTimePercentile(
             [FromRoute] DateTimeOffset fromTime,

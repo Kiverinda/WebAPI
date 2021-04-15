@@ -10,17 +10,17 @@ namespace MetricsAgent.DAL
 {
     public class HddMetricsRepository : IHddMetricsRepository
     {
-        private readonly SQLiteConnection _connection;
+        private readonly ISqlSettingsProvider _provider;
 
-        public HddMetricsRepository(SQLiteConnection connection)
+        public HddMetricsRepository(ISqlSettingsProvider provider)
         {
-            _connection = connection;
+            _provider = provider;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(HddMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("INSERT INTO hddmetrics (freesize, time) VALUES(@freesize, @time)",
                 new
                 {
@@ -31,7 +31,7 @@ namespace MetricsAgent.DAL
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("DELETE FROM hddmetrics WHERE id=@id",
                 new
                 {
@@ -41,7 +41,7 @@ namespace MetricsAgent.DAL
 
         public void Update(HddMetricModel item)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("UPDATE hddmetrics SET freesize = @freesize, time = @time WHERE id = @id",
                 new
                 {
@@ -53,7 +53,7 @@ namespace MetricsAgent.DAL
 
         public IList<HddMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<HddMetricModel>($"SELECT id, time, freesize From hddmetrics")
                 .ToList();
@@ -61,13 +61,29 @@ namespace MetricsAgent.DAL
 
         public HddMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(_connection);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .QuerySingle<HddMetricModel>("SELECT id, time, freesize FROM hddmetrics WHERE id = @id",
                     new
                     {
                         id = target
                     });
+        }
+
+        public IList<HddMetricModel> GetMetricsFromTimeToTime(
+            DateTimeOffset fromTime,
+            DateTimeOffset toTime)
+        {
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
+            return connection
+                .Query<HddMetricModel>(
+                    $"SELECT * From hddmetrics WHERE time > @fromTime AND time < @toTime",
+                    new
+                    {
+                        fromTime = fromTime.ToUnixTimeSeconds(),
+                        toTime = toTime.ToUnixTimeSeconds()
+                    })
+                .ToList();
         }
     }
 }
