@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using FluentMigrator.Runner;
 using MetricsAgent.DAL;
@@ -13,6 +14,9 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using System.Data.SQLite;
+using System.IO;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 
 namespace MetricsAgent
 {
@@ -24,13 +28,12 @@ namespace MetricsAgent
         }
 
         private IConfiguration Configuration { get; }
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddSingleton(new SQLiteConnection(ConnectionString));
 
+            services.AddSingleton<ISqlSettingsProvider, SqlSettingsProvider>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
             services.AddSingleton<IHddMetricsRepository, HddMetricsRepository>();
@@ -44,7 +47,7 @@ namespace MetricsAgent
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSQLite()
-                    .WithGlobalConnectionString(ConnectionString)
+                    .WithGlobalConnectionString(new SqlSettingsProvider().GetConnectionString())
                     .ScanIn(typeof(Startup).Assembly).For.Migrations()
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
@@ -72,6 +75,32 @@ namespace MetricsAgent
                 jobType: typeof(NetworkMetricJob),
                 cronExpression: "0/5 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API сервиса агента сбора метрик",
+                    Description = "Страница для тестирования работы API",
+                    TermsOfService = new Uri("https://coderda.com"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Kiverin",
+                        Email = string.Empty,
+                        Url = new Uri("https://coderda.com"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Free license",
+                        Url = new Uri("https://coderda.com"),
+                    }
+                });
+                var xmlFile =
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
+            });
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IMigrationRunner migrationRunner)
@@ -91,6 +120,13 @@ namespace MetricsAgent
             });
             
             migrationRunner.MigrateUp();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервиса агента сбора метрик");
+                c.RoutePrefix = string.Empty;
+            });
         }
     }
 }

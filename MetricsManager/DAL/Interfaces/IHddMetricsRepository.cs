@@ -10,6 +10,6 @@ namespace MetricsManager.DAL.Interfaces
         IList<HddMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent);
         IList<HddMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string sortingField);
         IList<HddMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string sortingField, int idAgent);
-        HddMetricModel LastLine();
+        DateTimeOffset LastTime();
     }
 }

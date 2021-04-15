@@ -24,6 +24,22 @@ namespace MetricsManager.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet("all")]
+        public IActionResult GetAll()
+        {
+            var metrics = _repository.GetAll();
+            var response = new AllCpuMetricsResponse()
+            {
+                Metrics = new List<CpuMetricManagerDto>()
+            };
+
+            foreach (var metric in metrics)
+            {
+                response.Metrics.Add(_mapper.Map<CpuMetricManagerDto>(metric));
+            }
+            return Ok(response);
+        }
+
         [HttpGet("agent/{idAgent}/from/{fromTime}/to/{toTime}")]
         public IActionResult GetMetricsFromAgent(
             [FromRoute] int idAgent,

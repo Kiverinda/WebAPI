@@ -14,7 +14,8 @@ using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using System;
-using System.Data.SQLite;
+using MetricsManager.DAL;
+using Microsoft.OpenApi.Models;
 
 namespace MetricsManager
 {
@@ -26,16 +27,16 @@ namespace MetricsManager
         }
 
         private IConfiguration Configuration { get; }
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpClient();
             services.AddHttpClient<IMetricsManagerClient, MetricsManagerClient>().AddTransientHttpErrorPolicy(p => p.WaitAndRetryAsync(3, _ =>
                 TimeSpan.FromMilliseconds(1000)));
-
+            
             services.AddControllers();
 
+            services.AddSingleton<ISqlSettingsProvider, SqlSettingsProvider>();
             services.AddSingleton<IAgentsRepository, AgentsRepository>();
             services.AddSingleton<ICpuMetricsRepository, CpuMetricsRepository>();
             services.AddSingleton<IDotNetMetricsRepository, DotNetMetricsRepository>();
@@ -50,18 +51,57 @@ namespace MetricsManager
             services.AddFluentMigratorCore()
                 .ConfigureRunner(rb => rb
                     .AddSQLite()
-                    .WithGlobalConnectionString(ConnectionString)
+                    .WithGlobalConnectionString(new SqlSettingsProvider().GetConnectionString())
                     .ScanIn(typeof(Startup).Assembly).For.Migrations()
                 ).AddLogging(lb => lb
                     .AddFluentMigratorConsole());
 
             services.AddSingleton<IJobFactory, SingletonJobFactory>();
             services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-            services.AddSingleton<MetricsFromAgents>();
+            services.AddSingleton<CpuMetricsFromAgents>();
             services.AddSingleton(new JobSchedule(
-                jobType: typeof(MetricsFromAgents),
+                jobType: typeof(CpuMetricsFromAgents),
+                cronExpression: "20/30 * * * * ?"));
+            services.AddSingleton<DotNetMetricsFromAgents>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(DotNetMetricsFromAgents),
+                cronExpression: "20/30 * * * * ?"));
+            services.AddSingleton<NetworkMetricsFromAgents>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(NetworkMetricsFromAgents),
+                cronExpression: "20/30 * * * * ?"));
+            services.AddSingleton<HddMetricsFromAgents>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(HddMetricsFromAgents),
+                cronExpression: "20/30 * * * * ?"));
+            services.AddSingleton<RamMetricsFromAgents>();
+            services.AddSingleton(new JobSchedule(
+                jobType: typeof(RamMetricsFromAgents),
                 cronExpression: "20/30 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
+
+            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Version = "v1",
+                    Title = "API сервиса агента сбора метрик",
+                    Description = "Тут можно поиграть с api нашего сервиса",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Kiverin",
+                        Email = "kiverinda@yandex.ru",
+                        Url = new Uri("https://kremlin.ru"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "можно указать под какой лицензией все опубликовано",
+                        Url = new Uri("https://example.com/license"),
+                    }
+                });
+            });
 
         }
 
@@ -82,6 +122,13 @@ namespace MetricsManager
             });
 
             migrationRunner.MigrateUp();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "API сервиса агента сбора метрик");
+            });
         }
     }
 }

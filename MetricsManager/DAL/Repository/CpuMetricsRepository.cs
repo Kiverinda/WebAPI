@@ -10,16 +10,17 @@ namespace MetricsManager.DAL.Repository
 {
     public class CpuMetricsRepository : ICpuMetricsRepository
     {
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+        private readonly ISqlSettingsProvider _provider;
 
-        public CpuMetricsRepository()
+        public CpuMetricsRepository(ISqlSettingsProvider provider)
         {
+            _provider = provider;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(CpuMetricModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("INSERT INTO cpumetrics(value, time, idagent) VALUES(@value, @time, @idagent)",
                 new
                 {
@@ -31,7 +32,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("DELETE FROM cpumetrics WHERE id=@id",
                 new
                 {
@@ -41,7 +42,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Update(CpuMetricModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("UPDATE cpumetrics SET value = @value, time = @time WHERE id = @id",
                 new
                 {
@@ -53,7 +54,8 @@ namespace MetricsManager.DAL.Repository
 
         public IList<CpuMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            //string s = _provider.GetConnectionString();
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             var q = connection
                 .Query<CpuMetricModel>($"SELECT * From cpumetrics")
                 .ToList();
@@ -62,7 +64,7 @@ namespace MetricsManager.DAL.Repository
 
         public CpuMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .QuerySingle<CpuMetricModel>("SELECT * FROM cpumetrics WHERE id = @id",
                     new
@@ -73,7 +75,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<CpuMetricModel> GetMetricsFromTimeToTime(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<CpuMetricModel>(
                     $"SELECT * From cpumetrics WHERE time > @fromTime AND time < @toTime",
@@ -87,7 +89,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<CpuMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<CpuMetricModel>(
                     $"SELECT * From cpumetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent",
@@ -102,7 +104,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<CpuMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<CpuMetricModel>($"SELECT * FROM cpumetrics WHERE time > @FromTime AND time < @ToTime ORDER BY {field}",
                     new
@@ -115,7 +117,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<CpuMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field, int idAgent)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<CpuMetricModel>($"SELECT * FROM cpumetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent ORDER BY {field}",
                     new
@@ -129,7 +131,7 @@ namespace MetricsManager.DAL.Repository
 
         public DateTimeOffset LastTime()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             var res = connection.QueryFirstOrDefault<CpuMetricModel>("SELECT * FROM cpumetrics ORDER BY time DESC LIMIT 1");
             var result = res ?? new CpuMetricModel();
             return result.Time;

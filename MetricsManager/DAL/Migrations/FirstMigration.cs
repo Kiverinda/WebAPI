@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentMigrator;
+﻿using FluentMigrator;
+using MetricsManager.DAL.Interfaces;
 
-namespace MetricsAgent.DAL.Migrations
+namespace MetricsManager.DAL.Migrations
 {
     [Migration(1)]
     public class FirstMigration : Migration
@@ -14,7 +11,7 @@ namespace MetricsAgent.DAL.Migrations
             Create.Table("agents")
                 .WithColumn("id").AsInt64().PrimaryKey().Identity()
                 .WithColumn("status").AsInt32()
-                .WithColumn("ipaddres").AsString()
+                .WithColumn("ipaddress").AsString()
                 .WithColumn("name").AsString();
 
             Create.Table("cpumetrics")

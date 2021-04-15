@@ -11,23 +11,28 @@ namespace MetricsManager.DAL.Repository
 
     public class AgentsRepository : IAgentsRepository
     {
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+        private readonly ISqlSettingsProvider _provider;
+
+        public AgentsRepository(ISqlSettingsProvider provider)
+        {
+            _provider = provider;
+        }
 
         public void Create(AgentModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute($"INSERT INTO agents(status, ipaddress, name) VALUES(@status, @ipaddress, @name)",
                 new
                 {
                     status = Convert.ToInt32(item.Status),
-                    ipaddress = item.Ipaddres,
+                    ipaddress = item.Ipaddress,
                     name = item.Name
                 });
         }
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute($"DELETE FROM agents WHERE id = @id",
                 new
                 {
@@ -37,12 +42,12 @@ namespace MetricsManager.DAL.Repository
 
         public void Update(AgentModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute($"UPDATE agents SET status = @status, ipaddress = @ipaddress, name = @name WHERE id = @id",
                 new
                 {
                     status = Convert.ToInt32(item.Status),
-                    ipaddress = item.Ipaddres,
+                    ipaddress = item.Ipaddress,
                     name = item.Name,
                     id = item.Id
                 });
@@ -50,7 +55,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<AgentModel> GetAll()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             var q = connection
                 .Query<AgentModel>($"SELECT * From agents")
                 .ToList();
@@ -59,7 +64,7 @@ namespace MetricsManager.DAL.Repository
 
         public AgentModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .QuerySingle<AgentModel>("SELECT * FROM agents WHERE id = @id",
                     new

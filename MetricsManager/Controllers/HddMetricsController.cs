@@ -82,7 +82,7 @@ namespace MetricsManager.Controllers
                 response.Metrics.Add(_mapper.Map<HddMetricManagerDto>(metric));
             }
 
-            _logger.LogInformation($"Запрос метрик Cpu FromTime = {fromTime} ToTime = {toTime} для кластера");
+            _logger.LogInformation($"Запрос метрик Hdd FromTime = {fromTime} ToTime = {toTime} для кластера");
 
             return Ok(response);
         }
@@ -101,7 +101,7 @@ namespace MetricsManager.Controllers
 
             var response = metrics[percentileThisList].Value;
 
-            _logger.LogInformation($"Запрос percentile = {percentile} Cpu FromTime = {fromTime} ToTime = {toTime}");
+            _logger.LogInformation($"Запрос percentile = {percentile} Hdd FromTime = {fromTime} ToTime = {toTime}");
 
             return Ok(response);
         }

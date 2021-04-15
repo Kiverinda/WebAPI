@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace MetricsManager.Controllers
 {
-    [Route("api/metrics/hdd")]
+    [Route("api/metrics/ram")]
     [ApiController]
     public class RamMetricsController : ControllerBase
     {

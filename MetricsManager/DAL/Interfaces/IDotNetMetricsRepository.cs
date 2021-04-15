@@ -10,6 +10,6 @@ namespace MetricsManager.DAL.Interfaces
         IList<DotNetMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent);
         IList<DotNetMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string sortingField);
         IList<DotNetMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string sortingField, int idAgent);
-        DotNetMetricModel LastLine();
+        DateTimeOffset LastTime();
     }
 }

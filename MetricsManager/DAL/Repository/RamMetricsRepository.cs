@@ -10,16 +10,17 @@ namespace MetricsManager.DAL.Repository
 {
     public class RamMetricsRepository : IRamMetricsRepository
     {
-        private const string ConnectionString = @"Data Source=metrics.db;Version=3;Pooling=true;Max Pool Size=100;";
+        private readonly ISqlSettingsProvider _provider;
 
-        public RamMetricsRepository()
+        public RamMetricsRepository(ISqlSettingsProvider provider)
         {
+            _provider = provider;
             SqlMapper.AddTypeHandler(new DateTimeOffsetHandler());
         }
 
         public void Create(RamMetricModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("INSERT INTO rammetrics (value, time, idagent) VALUES(@value, @time, @idagent)",
                 new
                 {
@@ -31,7 +32,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Delete(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("DELETE FROM rammetrics WHERE id=@id",
                 new
                 {
@@ -41,7 +42,7 @@ namespace MetricsManager.DAL.Repository
 
         public void Update(RamMetricModel item)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             connection.Execute("UPDATE rammetrics SET value = @value, time = @time WHERE id = @id",
                 new
                 {
@@ -53,7 +54,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<RamMetricModel> GetAll()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .Query<RamMetricModel>($"SELECT * From rammetrics")
                 .ToList();
@@ -61,7 +62,7 @@ namespace MetricsManager.DAL.Repository
 
         public RamMetricModel GetById(int target)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection
                 .QuerySingle<RamMetricModel>("SELECT * FROM rammetrics WHERE id = @id",
                     new
@@ -72,7 +73,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<RamMetricModel> GetMetricsFromTimeToTime(DateTimeOffset fromTime, DateTimeOffset toTime)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime",
                 new
                     {
@@ -84,7 +85,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<RamMetricModel> GetMetricsFromTimeToTimeFromAgent(DateTimeOffset fromTime, DateTimeOffset toTime, int idAgent)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @idagent",
                     new
                     {
@@ -97,7 +98,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<RamMetricModel> GetMetricsFromTimeToTimeOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime ORDER BY {field}",
                     new
                     {
@@ -109,7 +110,7 @@ namespace MetricsManager.DAL.Repository
 
         public IList<RamMetricModel> GetMetricsFromTimeToTimeFromAgentOrderBy(DateTimeOffset fromTime, DateTimeOffset toTime, string field, int idAgent)
         {
-            using var connection = new SQLiteConnection(ConnectionString);
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @idagent ORDER BY {field} ",
                     new
                     {
@@ -120,11 +121,12 @@ namespace MetricsManager.DAL.Repository
                 .ToList();
         }
 
-        public RamMetricModel LastLine()
+        public DateTimeOffset LastTime()
         {
-            using var connection = new SQLiteConnection(ConnectionString);
-            return connection
-                .QuerySingle<RamMetricModel>("SELECT * FROM rammetrics ORDER BY time DESC LIMIT 1");
+            using var connection = new SQLiteConnection(_provider.GetConnectionString());
+            var res = connection.QueryFirstOrDefault<RamMetricModel>("SELECT * FROM rammetrics ORDER BY time DESC LIMIT 1");
+            var result = res ?? new RamMetricModel();
+            return result.Time;
         }
     }
 }
