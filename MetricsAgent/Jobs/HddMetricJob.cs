@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
 
 
 namespace MetricsAgent.Jobs
 {
+    [DisallowConcurrentExecution]
     public class HddMetricJob : IJob
     {
         private readonly IServiceProvider _provider;
