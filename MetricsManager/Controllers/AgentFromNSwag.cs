@@ -5,11 +5,11 @@ namespace MetricsManager.Controllers
     [System.CodeDom.Compiler.GeneratedCode("NSwag", "13.10.9.0 (NJsonSchema v10.4.1.0 (Newtonsoft.Json v11.0.0.0))")]
     public partial interface IClient
     {
-        System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModel body);
+        System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModelFromNSwag body);
 
-        void ApiMetricsCpuCreate(CpuMetricModel body);
+        void ApiMetricsCpuCreate(CpuMetricModelFromNSwag body);
 
-        System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModel body, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModelFromNSwag body, System.Threading.CancellationToken cancellationToken);
         System.Threading.Tasks.Task ApiMetricsCpuAllAsync();
 
         void ApiMetricsCpuAll();
@@ -20,11 +20,11 @@ namespace MetricsManager.Controllers
         void ApiMetricsCpuFromTo(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
 
         System.Threading.Tasks.Task ApiMetricsCpuFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, System.Threading.CancellationToken cancellationToken);
-        System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile);
+        System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile);
     
-        void ApiMetricsCpuFromToPercentiles(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile);
+        void ApiMetricsCpuFromToPercentiles(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile);
     
-        System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile, System.Threading.CancellationToken cancellationToken);
         System.Threading.Tasks.Task ApiMetricsDotnetFromToAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
     
         void ApiMetricsDotnetFromTo(System.DateTimeOffset fromTime, System.DateTimeOffset toTime);
@@ -93,17 +93,17 @@ namespace MetricsManager.Controllers
         partial void PrepareRequest(System.Net.Http.HttpClient client, System.Net.Http.HttpRequestMessage request, System.Text.StringBuilder urlBuilder);
         partial void ProcessResponse(System.Net.Http.HttpClient client, System.Net.Http.HttpResponseMessage response);
 
-        public System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModel body)
+        public System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModelFromNSwag body)
         {
             return ApiMetricsCpuCreateAsync(body, System.Threading.CancellationToken.None);
         }
     
-        public void ApiMetricsCpuCreate(CpuMetricModel body)
+        public void ApiMetricsCpuCreate(CpuMetricModelFromNSwag body)
         {
             System.Threading.Tasks.Task.Run(async () => await ApiMetricsCpuCreateAsync(body, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
     
-        public async System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModel body, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ApiMetricsCpuCreateAsync(CpuMetricModelFromNSwag body, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/metrics/cpu/create");
@@ -358,7 +358,7 @@ namespace MetricsManager.Controllers
         /// <param name="percentile">требуемый перцентиль из Enum Percentile</param>
         /// <returns>Удачное выполнение запроса</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile)
+        public System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile)
         {
             return ApiMetricsCpuFromToPercentilesAsync(fromTime, toTime, percentile, System.Threading.CancellationToken.None);
         }
@@ -369,7 +369,7 @@ namespace MetricsManager.Controllers
         /// <param name="percentile">требуемый перцентиль из Enum Percentile</param>
         /// <returns>Удачное выполнение запроса</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public void ApiMetricsCpuFromToPercentiles(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile)
+        public void ApiMetricsCpuFromToPercentiles(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile)
         {
             System.Threading.Tasks.Task.Run(async () => await ApiMetricsCpuFromToPercentilesAsync(fromTime, toTime, percentile, System.Threading.CancellationToken.None)).GetAwaiter().GetResult();
         }
@@ -381,7 +381,7 @@ namespace MetricsManager.Controllers
         /// <param name="percentile">требуемый перцентиль из Enum Percentile</param>
         /// <returns>Удачное выполнение запроса</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public async System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, Percentile percentile, System.Threading.CancellationToken cancellationToken)
+        public async System.Threading.Tasks.Task ApiMetricsCpuFromToPercentilesAsync(System.DateTimeOffset fromTime, System.DateTimeOffset toTime, PercentileFromNSwag percentile, System.Threading.CancellationToken cancellationToken)
         {
             if (fromTime == null)
                 throw new System.ArgumentNullException("fromTime");
@@ -1121,7 +1121,7 @@ namespace MetricsManager.Controllers
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public partial class CpuMetricModel 
+    public partial class CpuMetricModelFromNSwag 
     {
         [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public int Id { get; set; }
@@ -1136,7 +1136,7 @@ namespace MetricsManager.Controllers
     }
     
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "10.4.1.0 (Newtonsoft.Json v11.0.0.0)")]
-    public enum Percentile
+    public enum PercentileFromNSwag
     {
         _50 = 50,
     

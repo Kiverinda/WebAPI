@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
+
 namespace MetricsAgent.Controllers
 {
     [Route("api/metrics/hdd")]
@@ -36,10 +37,9 @@ namespace MetricsAgent.Controllers
         /// <response code="200">Удачное выполнение запроса</response>
         /// <response code="400">Ошибка в запросе</response>
         [HttpGet("all")]
-        public IActionResult GetMetricsFreeHdd()
+        public IActionResult GetMetricsAvailableHdd()
         {
             IList<HddMetricModel> metrics = _repository.GetAll();
-            
             var response = new AllHddMetricsResponse()
             {
                 Metrics = new List<HddMetricDto>()
@@ -50,7 +50,7 @@ namespace MetricsAgent.Controllers
                 response.Metrics.Add(_mapper.Map<HddMetricDto>(metric));
             }
 
-            _logger.LogInformation("Запрос всех метрик Hdd");
+            _logger.LogInformation("Запрос всех метрик Available Hdd");
 
             return Ok(response);
         }
@@ -64,8 +64,8 @@ namespace MetricsAgent.Controllers
         /// GET api/metrics/hdd/from/{fromTime}/to/{toTime}
         ///
         /// </remarks>
-        /// <param name="fromTime">начальная метка времени в формате DateTimeOffset</param>
-        /// <param name="toTime">конечная метка времени в формате DateTimeOffset</param>
+        /// <paHdd name="fromTime">начальная метка времени в формате DateTimeOffset</paHdd>
+        /// <paHdd name="toTime">конечная метка времени в формате DateTimeOffset</paHdd>
         /// <returns>Список метрик, которые были сохранены в репозитории и соответствуют заданному диапазону времени</returns>
         /// <response code="200">Удачное выполнение запроса</response>
         /// <response code="400">Ошибка в запросе</response>

@@ -39,7 +39,7 @@ namespace MetricsAgent.Controllers
         /// <response code="200">Удачное выполнение запроса</response>
         /// <response code="400">Ошибка в запросе</response>
         [HttpGet("from/{fromTime}/to/{toTime}")]
-        public IActionResult GetMetricsNetwork(
+        public IActionResult GetMetricsFromTimeToTime(
             [FromRoute] DateTimeOffset fromTime,
             [FromRoute] DateTimeOffset toTime)
         {
