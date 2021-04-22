@@ -13,6 +13,7 @@ namespace MetricsManagerDesktop
             IUnityContainer container = new UnityContainer();
             container.RegisterType<ICpuMetricsCardViewModel, CpuMetricsCardViewModel>();
             container.RegisterType<ICpuMetricsCard, CpuMetricsCard>();
+            container.RegisterType<IAgentViewModel, AgentViewModel>();
             var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();
         }

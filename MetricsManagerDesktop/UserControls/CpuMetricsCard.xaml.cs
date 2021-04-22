@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using MetricsManagerDesktop.Interfaces;
 using System.ComponentModel;
 using System.Windows.Controls;
+using System.Windows.Input;
 using MetricsManagerDesktop.ViewModels;
 
 namespace MetricsManagerDesktop.UserControls
@@ -45,6 +47,11 @@ namespace MetricsManagerDesktop.UserControls
         public void SetToTime(DateTimeOffset toTime)
         {
             _viewModel.SetToTime(toTime);
+        }
+
+        public void SetAgent(KeyValuePair<int, string> agent)
+        {
+            _viewModel.SetAgent(agent);
         }
 
         public void ViewRange()

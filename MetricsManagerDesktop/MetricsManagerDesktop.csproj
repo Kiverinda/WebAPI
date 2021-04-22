@@ -175,8 +175,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Responses\AgentManagerDto.cs" />
     <Compile Include="UserControls\ICpuMetricsCard.cs" />
-    <Compile Include="ViewModels\ICpuMetricsCardViewModel.cs" />
+    <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="ViewModels\IAgentViewModel.cs" />
+    <Compile Include="ViewModels\ICpuMetricCardViewModel.cs" />
     <Compile Include="ViewModels\CpuMetricsCardViewModel.cs" />
     <Compile Include="Requests\GetAllCpuMetricsApiRequest.cs" />
     <Compile Include="Responses\AllCpuMetricsApiResponse.cs" />

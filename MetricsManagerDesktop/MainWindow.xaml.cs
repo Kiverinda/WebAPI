@@ -1,21 +1,26 @@
 ﻿using MetricsManagerDesktop.Interfaces;
 using MetricsManagerDesktop.UserControls;
 using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
+using MetricsManagerDesktop.ViewModels;
 
 namespace MetricsManagerDesktop
 {
     public partial class MainWindow : Window
     {
         private ICpuMetricsCard _cpu;
+        private IAgentViewModel _agent;
         
 
-        public MainWindow(ICpuMetricsCard cpu)
+        public MainWindow(ICpuMetricsCard cpu, IAgentViewModel agent)
         {
             InitializeComponent();
             FromDateTime.Value = DateTime.Now.AddDays(-1);
             _cpu = cpu;
+            _agent = agent;
+            DataContext = agent;
         }
 
         private void lst_SelectionChanged(object sender, RoutedEventArgs e)
@@ -34,7 +39,7 @@ namespace MetricsManagerDesktop
                         case 0:
                             _cpu.SetFromTime((DateTimeOffset)FromDateTime.Value);
                             _cpu.SetToTime((DateTimeOffset)ToDateTime.Value);
-
+                            _cpu.SetToTime((DateTimeOffset)ToDateTime.Value);
                             Panel.Children.Add(_cpu as UIElement);
                             break;
                         //case 1:
@@ -53,6 +58,14 @@ namespace MetricsManagerDesktop
                 }
             }
         }
+
+        private void ComboBox_AgentSelect_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count == 0)
+                return;
+            _cpu.SetAgent((KeyValuePair<int, string>)e.AddedItems[0]);
+        }
+
 
         private void ButtonClickStartRealTime(object sender, RoutedEventArgs e)
         {

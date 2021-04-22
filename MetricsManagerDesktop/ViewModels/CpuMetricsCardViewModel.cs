@@ -21,13 +21,12 @@ namespace MetricsManagerDesktop.ViewModels
         private readonly HttpClient _httpClient;
         private DateTimeOffset _lastTime;
         private DispatcherTimer _timer;
-        private int _countViewValues;
+        private KeyValuePair<int, string> _agent;
         private DateTimeOffset fromTime;
         private DateTimeOffset toTime;
 
         public CpuMetricsCardViewModel()
         {
-            _countViewValues = 30;
             _httpClient = new HttpClient();
             _timer = new DispatcherTimer();
             _timer.Tick += timer_Tick;
@@ -40,13 +39,6 @@ namespace MetricsManagerDesktop.ViewModels
                     Values = new ChartValues<double> {}
                 }
             };
-
-            //UpdateCpuMetrics(new GetAllCpuMetricsApiRequest()
-            //{
-            //    FromTime = fromTime,
-            //    ToTime = toTime,
-            //    Agent = 1
-            //});
         }
 
         public void UpdateCpuMetrics(GetAllCpuMetricsApiRequest request)
@@ -111,7 +103,7 @@ namespace MetricsManagerDesktop.ViewModels
             {
                 FromTime = _lastTime,
                 ToTime = DateTimeOffset.UtcNow,
-                Agent = 1
+                Agent = _agent.Key
             });
         }
 
@@ -141,6 +133,12 @@ namespace MetricsManagerDesktop.ViewModels
         {
             toTime = toDateTime;
         }
+
+        public void SetAgent(KeyValuePair<int, string> agent)
+        {
+            _agent = agent;
+        }
+
 
         private void ResetMaxTime()
         {

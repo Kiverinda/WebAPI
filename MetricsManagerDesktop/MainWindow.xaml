@@ -5,13 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MetricsManagerDesktop"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:viewModels="clr-namespace:MetricsManagerDesktop.ViewModels"
         mc:Ignorable="d"
         Title="MainWindow" Height="650" Width="800">
     <Grid>
         <ListBox ItemsSource="{Binding Customers}" />
         <StackPanel Name="FirstWindow">
             <StackPanel Name="Stack" Width="auto">
-                <ComboBox Name="AgentSelect" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top"/>
+                <ComboBox Name="AgentSelect" SelectionChanged="ComboBox_AgentSelect_SelectionChanged" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" ItemsSource="{Binding Agents}" SelectedIndex="0" Cursor=""/>
                 <xctk:DateTimePicker Name="FromDateTime" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" 
                                       DisplayDefaultValueOnEmptyText="True" Text="Выбор времени"/>
                 <xctk:DateTimePicker Name="ToDateTime" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" 
