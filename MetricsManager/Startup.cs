@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentMigrator.Runner;
 using MetricsManager.Client;
+using MetricsManager.DAL;
 using MetricsManager.DAL.Interfaces;
 using MetricsManager.DAL.Repository;
 using MetricsManager.Jobs;
@@ -9,13 +10,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Polly;
 using Quartz;
 using Quartz.Impl;
 using Quartz.Spi;
 using System;
-using MetricsManager.DAL;
-using Microsoft.OpenApi.Models;
+using System.IO;
+using System.Reflection;
 
 namespace MetricsManager
 {
@@ -80,27 +82,30 @@ namespace MetricsManager
                 cronExpression: "20/30 * * * * ?"));
             services.AddHostedService<QuartzHostedService>();
 
-            services.AddSwaggerGen();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "API сервиса агента сбора метрик",
-                    Description = "“ут можно поиграть с api нашего сервиса",
-                    TermsOfService = new Uri("https://example.com/terms"),
+                    Description = "—траница дл€ тестировани€ работы API",
+                    TermsOfService = new Uri("https://coderda.com"),
                     Contact = new OpenApiContact
                     {
                         Name = "Kiverin",
-                        Email = "kiverinda@yandex.ru",
-                        Url = new Uri("https://kremlin.ru"),
+                        Email = string.Empty,
+                        Url = new Uri("https://coderda.com"),
                     },
                     License = new OpenApiLicense
                     {
-                        Name = "можно указать под какой лицензией все опубликовано",
-                        Url = new Uri("https://example.com/license"),
+                        Name = "Free license",
+                        Url = new Uri("https://coderda.com"),
                     }
                 });
+                var xmlFile =
+                    $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                c.IncludeXmlComments(xmlPath);
             });
 
         }

@@ -1,15 +1,14 @@
-﻿using MetricsAgent.DAL;
+﻿using MetricsAgent.DAL.Interfaces;
+using MetricsAgent.DAL.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Quartz;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using MetricsAgent.DAL.Interfaces;
-using MetricsAgent.DAL.Models;
-
 
 namespace MetricsAgent.Jobs
 {
+    [DisallowConcurrentExecution]
     public class CpuMetricJob : IJob
     {
         private readonly ICpuMetricsRepository _repository;
