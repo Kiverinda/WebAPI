@@ -11,7 +11,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsAgent", "..\MetricsA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsAgentTests", "..\MetricsAgentTests\MetricsAgentTests.csproj", "{199931A7-43B1-4D2F-84F3-BF0B69926DFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsLibrary", "..\MetricsLibrary\MetricsLibrary.csproj", "{183CA843-F7BE-4F0D-8DF2-343037A14124}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MetricsLibrary", "..\MetricsLibrary\MetricsLibrary.csproj", "{183CA843-F7BE-4F0D-8DF2-343037A14124}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerClient", "..\MetricsManagerClient\MetricsManagerClient.csproj", "{0E9D6E8B-8B0B-4DD8-81A4-B145DA334DEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricsManagerDesktop", "..\MetricsManagerDesktop\MetricsManagerDesktop.csproj", "{3A4A91B4-D2B0-4B9F-BA30-8C9016006850}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{183CA843-F7BE-4F0D-8DF2-343037A14124}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{183CA843-F7BE-4F0D-8DF2-343037A14124}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{183CA843-F7BE-4F0D-8DF2-343037A14124}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E9D6E8B-8B0B-4DD8-81A4-B145DA334DEC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E9D6E8B-8B0B-4DD8-81A4-B145DA334DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E9D6E8B-8B0B-4DD8-81A4-B145DA334DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E9D6E8B-8B0B-4DD8-81A4-B145DA334DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A4A91B4-D2B0-4B9F-BA30-8C9016006850}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A4A91B4-D2B0-4B9F-BA30-8C9016006850}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A4A91B4-D2B0-4B9F-BA30-8C9016006850}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A4A91B4-D2B0-4B9F-BA30-8C9016006850}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

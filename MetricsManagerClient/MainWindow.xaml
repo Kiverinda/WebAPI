@@ -1,0 +1,31 @@
+﻿<Window x:Class="MetricsManagerClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MetricsManagerClient"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:extui="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="700" Width="900">
+
+    <StackPanel Name="FirstWindow">
+        <StackPanel Name="Stack" Width="auto">
+            <ComboBox Name="AgentSelect" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top"/>
+            <extui:DateTimePicker Name="DateTimeSelect" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" 
+                                  DisplayDefaultValueOnEmptyText="True" Text="Выбор времени"/>
+            <ListBox Name="listSelectMetrics" 
+                     CheckBox.Click="lst_SelectionChanged">
+                <CheckBox Margin="3">Cpu</CheckBox>
+                <CheckBox Margin="3">Hdd</CheckBox>
+                <CheckBox Margin="3">Ram</CheckBox>
+                <CheckBox Margin="3">Network</CheckBox>
+                <CheckBox Margin="3">DotNet</CheckBox>
+            </ListBox>
+            <Button Content="Start" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" Click="ButtonClickStart"/>
+            <Button Content="Stop" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" Click="ButtonClickStop"/>
+         </StackPanel>
+        <WrapPanel Name="Panel" />
+        </StackPanel>
+
+</Window>
