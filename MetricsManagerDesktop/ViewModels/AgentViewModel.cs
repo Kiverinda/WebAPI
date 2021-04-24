@@ -42,7 +42,7 @@ namespace MetricsManagerDesktop.ViewModels
                         var result = JsonSerializer.Deserialize<AllAgentsResponse>(content, new JsonSerializerOptions()
                             { PropertyNameCaseInsensitive = true });
 
-                        if (result.Metrics.Count == 0)
+                        if (result != null && result.Metrics.Count == 0)
                         {
                             return;
                         }

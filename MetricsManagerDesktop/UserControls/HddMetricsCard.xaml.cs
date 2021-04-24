@@ -6,11 +6,11 @@ using System.Windows.Controls;
 
 namespace MetricsManagerDesktop.UserControls
 {
-    public sealed partial class CpuMetricsCard : UserControl, INotifyPropertyChanged, ICpuMetricsCard
+    public sealed partial class HddMetricsCard : UserControl, INotifyPropertyChanged, IHddMetricsCard
     {
-        private ICpuMetricsCardViewModel _viewModel;
+        private IHddMetricsCardViewModel _viewModel;
         
-        public CpuMetricsCard(ICpuMetricsCardViewModel viewModel)
+        public HddMetricsCard(IHddMetricsCardViewModel viewModel)
         {
             InitializeComponent();
             _viewModel = viewModel;

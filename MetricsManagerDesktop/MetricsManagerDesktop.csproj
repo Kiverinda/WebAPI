@@ -175,10 +175,25 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\HddMetricsCardModel.cs" />
+    <Compile Include="Models\IHddMetricsCardModel.cs" />
+    <Compile Include="Models\ICpuMetricsCardModel.cs" />
+    <Compile Include="Models\CpuMetricsCardModel.cs" />
+    <Compile Include="Requests\GetAllHddMetricsApiRequest.cs" />
     <Compile Include="Responses\AgentManagerDto.cs" />
+    <Compile Include="Responses\AllHddMetricsApiResponse.cs" />
+    <Compile Include="UserControls\HddMetricsCard.xaml.cs">
+      <DependentUpon>HddMetricsCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IDotNetMetricsCard.cs" />
+    <Compile Include="UserControls\INetworkMetricsCard.cs" />
+    <Compile Include="UserControls\IRamMetricsCard.cs" />
+    <Compile Include="UserControls\IHddMetricsCard.cs" />
     <Compile Include="UserControls\ICpuMetricsCard.cs" />
     <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="ViewModels\HddMetricsCardViewModel.cs" />
     <Compile Include="ViewModels\IAgentViewModel.cs" />
+    <Compile Include="ViewModels\IHddMetricCardViewModel.cs" />
     <Compile Include="ViewModels\ICpuMetricCardViewModel.cs" />
     <Compile Include="ViewModels\CpuMetricsCardViewModel.cs" />
     <Compile Include="Requests\GetAllCpuMetricsApiRequest.cs" />
@@ -201,6 +216,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\HddMetricsCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\CpuMetricsCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -237,8 +256,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Models\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

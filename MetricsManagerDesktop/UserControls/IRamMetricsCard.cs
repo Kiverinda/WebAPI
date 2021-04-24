@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace MetricsManagerDesktop.UserControls
 {
-    public interface ICpuMetricsCard
+    public interface IRamMetricsCard
     {
         void StartView();
         void StopView();

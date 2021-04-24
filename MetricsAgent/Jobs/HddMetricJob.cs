@@ -25,7 +25,7 @@ namespace MetricsAgent.Jobs
 
         public Task Execute(IJobExecutionContext context)
         {
-            double hddFreeSpace = _hddCounter.NextValue()/1024/1024;
+            double hddFreeSpace = _hddCounter.NextValue()/1024;
             var time = DateTimeOffset.UtcNow;
             _repository.Create(new HddMetricModel()
             {

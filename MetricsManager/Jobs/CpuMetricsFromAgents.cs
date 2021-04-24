@@ -31,7 +31,6 @@ namespace MetricsManager.Jobs
             DateTimeOffset fromTime = _repositoryCpu.LastTime();
             IList<AgentModel> agents = _repositoryAgent.GetAll();
 
-
             foreach (var agent in agents)
             {
                 if (agent.Status == true)
