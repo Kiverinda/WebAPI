@@ -20,6 +20,9 @@ namespace MetricsManagerDesktop
             container.RegisterType<IRamMetricsCardViewModel, RamMetricsCardViewModel>();
             container.RegisterType<IRamMetricsCardModel, RamMetricsCardModel>();
             container.RegisterType<IRamMetricsCard, RamMetricsCard>();
+            container.RegisterType<IDotNetMetricsCardViewModel, DotNetMetricsCardViewModel>();
+            container.RegisterType<IDotNetMetricsCardModel, DotNetMetricsCardModel>();
+            container.RegisterType<IDotNetMetricsCard, DotNetMetricsCard>();
             container.RegisterType<IAgentViewModel, AgentViewModel>();
             var mainWindow = container.Resolve<MainWindow>();
             mainWindow.Show();

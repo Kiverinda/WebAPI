@@ -9,26 +9,25 @@ using System.Windows.Threading;
 
 namespace MetricsManagerDesktop.ViewModels
 {
-    public class HddMetricsCardViewModel : IHddMetricsCardViewModel, INotifyPropertyChanged
+    public class DotNetMetricsCardViewModel : IDotNetMetricsCardViewModel, INotifyPropertyChanged
     {
-        private readonly IHddMetricsCardModel _model;
-        public SeriesCollection HddColumnSeriesValues { get; private set; }
+        private readonly IDotNetMetricsCardModel _model;
+        public SeriesCollection DotNetColumnSeriesValues { get; private set; }
         public int MaxValue { get; private set; }
-        public int MinValue { get; private set; }
         private DateTimeOffset _lastTime;
         private DispatcherTimer _timer;
         private KeyValuePair<int, string> _agent;
         private DateTimeOffset fromTime;
         private DateTimeOffset toTime;
 
-        public HddMetricsCardViewModel(IHddMetricsCardModel model)
+        public DotNetMetricsCardViewModel(IDotNetMetricsCardModel model)
         {
             _model = model;
             _timer = new DispatcherTimer();
             _timer.Tick += timer_Tick;
             _timer.Interval = new TimeSpan(0, 0, 1);
 
-            HddColumnSeriesValues = new SeriesCollection
+            DotNetColumnSeriesValues = new SeriesCollection
             {
                 new ColumnSeries
                 {
@@ -37,34 +36,31 @@ namespace MetricsManagerDesktop.ViewModels
             };
         }
 
-        public void UpdateHddMetrics(GetAllHddMetricsApiRequest request)
+        public void UpdateDotNetMetrics(GetAllDotNetMetricsApiRequest request)
         {
-            var result = _model.GetHddMetrics(request);
+            var result = _model.GetDotNetMetrics(request);
             if (result == null || result.Metrics.Count == 0)
             {
                 return;
             }
-            MinValue = (int)result.Metrics[0].Value;
             foreach (var item in result.Metrics)
             {
-                AddToCollection(item.Value);
-                MaxValue = Math.Max((int)item.Value, MaxValue);
-                MinValue = Math.Min((int)item.Value, MinValue);
+                AddToCollection(DotNetColumnSeriesValues, (double)item.Value);
+                MaxValue = Math.Max(item.Value, MaxValue);
             }
             OnPropertyChanged("MaxValue");
-            OnPropertyChanged("MinValue");
             _lastTime = result.Metrics[result.Metrics.Count - 1].Time;
         }
 
-        private void AddToCollection(double value)
+        private void AddToCollection(SeriesCollection collection, double value)
         {
-            HddColumnSeriesValues[0].Values.Add(Math.Truncate(value));
-            if (HddColumnSeriesValues[0].Values.Count > 30) HddColumnSeriesValues[0].Values.RemoveAt(0);
+            collection[0].Values.Add(value);
+            if (collection[0].Values.Count > 30) collection[0].Values.RemoveAt(0);
         }
 
         public SeriesCollection GetColumnSeriesValues()
         {
-            return HddColumnSeriesValues;
+            return DotNetColumnSeriesValues;
         }
 
         public void StartView()
@@ -79,7 +75,7 @@ namespace MetricsManagerDesktop.ViewModels
 
         private void timer_Tick(object sender, EventArgs e)
         {
-            UpdateHddMetrics(new GetAllHddMetricsApiRequest()
+            UpdateDotNetMetrics(new GetAllDotNetMetricsApiRequest()
             {
                 FromTime = _lastTime,
                 ToTime = DateTimeOffset.UtcNow,
@@ -101,7 +97,7 @@ namespace MetricsManagerDesktop.ViewModels
         {
             ResetMaxTime();
             StopView();
-            UpdateHddMetrics(new GetAllHddMetricsApiRequest()
+            UpdateDotNetMetrics(new GetAllDotNetMetricsApiRequest()
             {
                 FromTime = fromTime,
                 ToTime = toTime,

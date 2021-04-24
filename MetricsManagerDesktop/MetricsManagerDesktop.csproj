@@ -175,17 +175,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\DotNetMetricsCardModel.cs" />
+    <Compile Include="Models\IDotNetMetricsCardModel.cs" />
     <Compile Include="Models\RamMetricsCardModel.cs" />
     <Compile Include="Models\HddMetricsCardModel.cs" />
     <Compile Include="Models\IRamMetricsCardModel.cs" />
     <Compile Include="Models\IHddMetricsCardModel.cs" />
     <Compile Include="Models\ICpuMetricsCardModel.cs" />
     <Compile Include="Models\CpuMetricsCardModel.cs" />
+    <Compile Include="Requests\GetAllDotNetMetricsApiRequest.cs" />
     <Compile Include="Requests\GetAllHddMetricsApiRequest.cs" />
     <Compile Include="Requests\GetAllRamMetricsApiRequest.cs" />
     <Compile Include="Responses\AgentManagerDto.cs" />
+    <Compile Include="Responses\AllDotNetMetricsApiResponse.cs" />
     <Compile Include="Responses\AllHddMetricsApiResponse.cs" />
     <Compile Include="Responses\AllRamMetricsApiResponse.cs" />
+    <Compile Include="UserControls\DotNetMetricsCard.xaml.cs">
+      <DependentUpon>DotNetMetricsCard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\RamMetricsCard.xaml.cs">
       <DependentUpon>RamMetricsCard.xaml</DependentUpon>
     </Compile>
@@ -198,6 +205,8 @@
     <Compile Include="UserControls\IHddMetricsCard.cs" />
     <Compile Include="UserControls\ICpuMetricsCard.cs" />
     <Compile Include="ViewModels\AgentViewModel.cs" />
+    <Compile Include="ViewModels\DotNetMetricsCardViewModel.cs" />
+    <Compile Include="ViewModels\IDotNetMetricCardViewModel.cs" />
     <Compile Include="ViewModels\IRamMetricCardViewModel.cs" />
     <Compile Include="ViewModels\RamMetricsCardViewModel.cs" />
     <Compile Include="ViewModels\HddMetricsCardViewModel.cs" />
@@ -225,6 +234,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\DotNetMetricsCard.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="UserControls\RamMetricsCard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
