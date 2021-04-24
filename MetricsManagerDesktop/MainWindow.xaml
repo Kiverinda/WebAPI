@@ -21,8 +21,8 @@
                          CheckBox.Click="lst_SelectionChanged">
                     <CheckBox Margin="3">Cpu</CheckBox>
                     <CheckBox Margin="3">Hdd</CheckBox>
-                    <!--<CheckBox Margin="3">Ram</CheckBox>
-                    <CheckBox Margin="3">Network</CheckBox>
+                    <CheckBox Margin="3">Ram</CheckBox>
+                    <!--<CheckBox Margin="3">Network</CheckBox>
                     <CheckBox Margin="3">DotNet</CheckBox>-->
                 </ListBox>
                 <Button Content="ViewRange" HorizontalAlignment="Left" Margin="3" VerticalAlignment="Top" Click="ButtonClickViewRange"/>
