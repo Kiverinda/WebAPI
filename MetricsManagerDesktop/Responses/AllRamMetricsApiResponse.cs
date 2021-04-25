@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace MetricsManager.Client.ApiResponses
+namespace MetricsManagerDesktop.Responses
 {
     public class AllRamMetricsApiResponse
     {
@@ -11,7 +11,7 @@ namespace MetricsManager.Client.ApiResponses
     public class RamMetricApiResponse
     {
         public DateTimeOffset Time { get; set; }
-        public double Available { get; set; }
+        public double Value { get; set; }
         public int Id { get; set; }
         public int IdAgent { get; set; }
     }

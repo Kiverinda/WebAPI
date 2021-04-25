@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="93e7eb2e-9dff-4d43-947b-a3fb14cfc860" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/Jobs/HddMetricJob.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Jobs/HddMetricJob.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/metrics.db" beforeDir="false" afterPath="$PROJECT_DIR$/metrics.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Client/ApiResponses/AllHddMetricsApiResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Client/ApiResponses/AllHddMetricsApiResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Client/ApiResponses/AllRamMetricsApiResponse.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Client/ApiResponses/AllRamMetricsApiResponse.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/DAL/Repository/HddMetricsRepository.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/DAL/Repository/HddMetricsRepository.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Jobs/CpuMetricsFromAgents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Jobs/CpuMetricsFromAgents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Jobs/HddMetricsFromAgents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Jobs/HddMetricsFromAgents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Jobs/RamMetricsFromAgents.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Jobs/RamMetricsFromAgents.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/Responses/HddMetricsManagerDto.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/Responses/HddMetricsManagerDto.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManager/metrics.db" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManager/metrics.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/App.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/App.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/MainWindow.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/MainWindow.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/MetricsManagerDesktop.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/MetricsManagerDesktop.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/UserControls/CpuMetricsCard.xaml.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/UserControls/CpuMetricsCard.xaml.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/UserControls/ICpuMetricsCard.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/UserControls/ICpuMetricsCard.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/ViewModels/AgentViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/ViewModels/AgentViewModel.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MetricsManagerDesktop/ViewModels/CpuMetricsCardViewModel.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../MetricsManagerDesktop/ViewModels/CpuMetricsCardViewModel.cs" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1rZifsFLBuW4d2F20FrJTrtnrmu" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <created>1619190121902</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1619190121902</updated>
+      <workItem from="1619190126016" duration="1000" />
+    </task>
+    <servers />
+  </component>
+  <component name="UnityUnitTestConfiguration" currentTestLauncher="NUnit" />
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

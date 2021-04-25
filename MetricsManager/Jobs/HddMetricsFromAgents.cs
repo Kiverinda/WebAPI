@@ -31,7 +31,6 @@ namespace MetricsManager.Jobs
             DateTimeOffset fromTime = _repositoryHdd.LastTime();
             IList<AgentModel> agents = _repositoryAgent.GetAll();
 
-
             foreach (var agent in agents)
             {
                 if (agent.Status == true)
@@ -51,7 +50,7 @@ namespace MetricsManager.Jobs
                             {
                                 IdAgent = agent.Id,
                                 Time = metric.Time,
-                                Value = metric.Value
+                                Value = metric.FreeSize
                             });
                         }
                     }

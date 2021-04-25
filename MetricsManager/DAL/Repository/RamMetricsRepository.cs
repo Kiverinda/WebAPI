@@ -47,7 +47,7 @@ namespace MetricsManager.DAL.Repository
                 new
                 {
                     value = item.Value,
-                    time = item.Time,
+                    time = item.Time.ToUnixTimeSeconds(),
                     id = item.Id
                 });
         }
@@ -77,9 +77,9 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime",
                 new
                     {
-                    FromTime = fromTime,
-                    ToTime = toTime
-                    })
+                    FromTime = fromTime.ToUnixTimeSeconds(),
+                    ToTime = toTime.ToUnixTimeSeconds()
+                })
                 .ToList();
         }
 
@@ -89,8 +89,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @idagent",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime,
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds(),
                         idagent = idAgent
                     })
                 .ToList();
@@ -102,8 +102,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime ORDER BY {field}",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds()
                     })
                 .ToList();
         }
@@ -114,8 +114,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<RamMetricModel>($"SELECT * From rammetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @idagent ORDER BY {field} ",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime,
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds(),
                         idagent = idAgent
                     })
                 .ToList();

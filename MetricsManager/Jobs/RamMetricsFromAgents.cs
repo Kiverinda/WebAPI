@@ -51,7 +51,7 @@ namespace MetricsManager.Jobs
                             {
                                 IdAgent = agent.Id,
                                 Time = metric.Time,
-                                Value = metric.Value
+                                Value = metric.Available
                             });
                         }
                     }

@@ -77,9 +77,9 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime",
                 new
                     {
-                    FromTime = fromTime,
-                    ToTime = toTime
-                    })
+                    FromTime = fromTime.ToUnixTimeSeconds(),
+                    ToTime = toTime.ToUnixTimeSeconds()
+                })
                 .ToList();
         }
 
@@ -89,8 +89,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime,
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds(),
                         IdAgent = idAgent
                     })
                 .ToList();
@@ -102,8 +102,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime ORDER BY {field}",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds()
                     })
                 .ToList();
         }
@@ -114,8 +114,8 @@ namespace MetricsManager.DAL.Repository
             return connection.Query<HddMetricModel>($"SELECT * From hddmetrics WHERE time > @FromTime AND time < @ToTime AND idagent = @IdAgent ORDER BY {field} ",
                     new
                     {
-                        FromTime = fromTime,
-                        ToTime = toTime,
+                        FromTime = fromTime.ToUnixTimeSeconds(),
+                        ToTime = toTime.ToUnixTimeSeconds(),
                         IdAgent = idAgent
                     })
                 .ToList();
